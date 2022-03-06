@@ -20,6 +20,13 @@ btn {
 	font-size: 4rem;
 }
 
+#file-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+}
+
 #submit-btn {
 	background-color: rgb(121, 175, 219);
 }

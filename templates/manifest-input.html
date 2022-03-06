@@ -12,6 +12,11 @@
 			rel="stylesheet"
 			href="{{url_for('static', filename='styles.css')}}"
 		/>
+		<!-- <link rel="stylesheet" href="../static/styles.css" /> -->
+		<script
+			defer
+			src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+		></script>
 
 		<title>Manifest Input</title>
 	</head>
@@ -20,15 +25,34 @@
 			<div class="hero-head">
 				<div
 					id="file-title"
-					class="container title has-text-centered has-text-white"
+					class="container title has-text-centered has-text-white my-3"
 				>
 					<h1>File Upload</h1>
 				</div>
 			</div>
-			<div class="hero-body">
+			<div id="file-container" class="hero-body">
 				<div class="container title has-text-centered has-text-white">
-					<h2>Upload Manifest</h2>
-					<input type="file" />
+					<h2 class="mt-6">Upload Manifest</h2>
+				</div>
+				<div class="container">
+					<div id="file-upload" class="file has-name is-boxed">
+						<label class="file-label">
+							<input
+								class="file-input"
+								type="file"
+								name="manifest"
+							/>
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="fas fa-upload"></i>
+								</span>
+								<span class="file-label"> Choose a file… </span>
+							</span>
+							<span class="file-name has-text-centered">
+								No file uploaded
+							</span>
+						</label>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -63,4 +87,17 @@
 			</div>
 		</section>
 	</body>
+	<script>
+		const fileInput = document.querySelector(
+			"#file-upload input[type=file]"
+		);
+		fileInput.onchange = () => {
+			if (fileInput.files.length > 0) {
+				const fileName = document.querySelector(
+					"#file-upload .file-name"
+				);
+				fileName.textContent = fileInput.files[0].name;
+			}
+		};
+	</script>
 </html>
