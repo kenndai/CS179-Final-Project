@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+		/>
+		<!-- <link
+			rel="stylesheet"
+			href="{{url_for('static', filename='styles.css')}}"
+		/> -->
+		<link rel="stylesheet" href="../static/styles.css" />
+		<title>Welcome Page</title>
+	</head>
+	<body>
+		<section class="hero is-halfheight">
+			<div class="hero-body">
+				<div
+					id="welcome-title"
+					class="container title has-text-centered has-text-white is-1"
+				>
+					<h1>Welcome</h1>
+				</div>
+			</div>
+		</section>
+		<section class="hero is-halfheight">
+			<div class="section has-text-centered">
+				<div class="column is-6 is-offset-3">
+					<form action="#" method="post">
+						<input
+							id="input-name"
+							class="input is-medium"
+							type="text"
+							name="name"
+							placeholder="Enter your name"
+						/>
+						<!-- <a href="manifest-input.html" -->
+						<button id="submit-btn" class="button is-large mt-4">
+							Sign In
+						</button>
+						<!-- </a> -->
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+	<!-- <script src="index.js"></script> -->
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+		/>
+		<!-- <link
+			rel="stylesheet"
+			href="{{url_for('static', filename='styles.css')}}"
+		/> -->
+		<link rel="stylesheet" href="../static/styles.css" />
+
+		<title>Main</title>
+	</head>
+	<body>
+		<section class="hero is-fullheight">
+			<nav
+				class="navbar is-fullwidth"
+				role="navigation"
+				aria-label="main navigation"
+			>
+				<div id="options-navbar" class="navbar-menu">
+					<div class="navbar-center">
+						<button class="button is-large navbar-item">
+							<div
+								id="manifest-dropdown"
+								class="navbar-item has-dropdown is-hoverable is-large"
+							>
+								<p>Manifest</p>
+								<div class="navbar-dropdown">
+									<a
+										class="navbar-item is-size-5 has-text-centered"
+									>
+										Download outbound manifest
+									</a>
+									<a
+										href="manifest-input.html"
+										class="navbar-item is-size-5 has-text-centered"
+									>
+										Upload new manifest
+									</a>
+								</div>
+							</div>
+						</button>
+						<button class="button is-large navbar-item">
+							Log Entry
+						</button>
+						<button
+							class="button title is-large navbar-item"
+							disabled
+						>
+							Ship Name
+						</button>
+						<button class="button is-large navbar-item is-success">
+							Finish
+						</button>
+						<a
+							href="landing.html"
+							class="button is-large navbar-item is-danger"
+							>Sign Out</a
+						>
+						<!-- <button class="button is-large navbar-item is-danger">
+							<a href="landing.html">Sign Out</a>
+						</button> -->
+					</div>
+				</div>
+			</nav>
+
+			<section class="hero-body">
+				<section id="option-buttons">
+					<button
+						id="unload-button"
+						class="button is-large is-size-6 my-6"
+					>
+						Unload
+					</button>
+					<button
+						id="confirm-button"
+						disabled
+						class="button is-large my-6"
+					>
+						Confirm
+					</button>
+					<button id="balance-button" class="button is-large my-6">
+						Balance
+					</button>
+				</section>
+			</section>
+		</section>
+	</body>
+</html>

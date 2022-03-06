@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+		/>
+		<!-- <link
+			rel="stylesheet"
+			href="{{url_for('static', filename='styles.css')}}"
+		/> -->
+		<link rel="stylesheet" href="../static/styles.css" />
+
+		<title>Manifest Input</title>
+	</head>
+	<body>
+		<section class="hero is-halfheight">
+			<div class="hero-head">
+				<div
+					id="file-title"
+					class="container title has-text-centered has-text-white"
+				>
+					<h1>File Upload</h1>
+				</div>
+			</div>
+			<div class="hero-body">
+				<div class="container title has-text-centered has-text-white">
+					<h2>Upload Manifest</h2>
+					<input type="file" />
+				</div>
+			</div>
+		</section>
+		<section class="hero is-halfheight">
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<div class="column">
+						<a href="landing.html"
+							><button
+								id="upload-quit-btn"
+								class="button is-large quit-btn"
+							>
+								Quit
+							</button></a
+						>
+					</div>
+				</div>
+				<div class="container has-text-centered">
+					<div class="column">
+						<a href="index.html"
+							><button
+								id="upload-cont-btn"
+								class="button is-success is-large cont-btn"
+							>
+								Continue
+							</button></a
+						>
+					</div>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="modal.js"></script>
+</html>

@@ -1,0 +1,54 @@
+body {
+	color: white;
+	background-color: rgb(90, 106, 119);
+}
+
+html {
+	overflow: hidden; /* Hide scrollbars */
+}
+
+btn {
+	cursor: pointer;
+}
+
+#welcome-title {
+	font-size: 6rem;
+	font-family: serif;
+}
+
+#file-title {
+	font-size: 4rem;
+}
+
+#submit-btn {
+	background-color: rgb(121, 175, 219);
+}
+
+#option-buttons {
+	display: flex;
+	flex-direction: column;
+}
+
+.quit-btn {
+	background-color: rgb(241, 128, 117);
+}
+
+.navbar-center {
+	display: flex;
+	justify-content: space-between;
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-direction: row;
+}
+
+.navbar-dropdown {
+	border-top: 0px;
+}
+
+.navbar-item {
+	display: flex;
+	flex-basis: auto;
+	flex-grow: 1;
+	flex-shrink: 0;
+	justify-content: center;
+}
