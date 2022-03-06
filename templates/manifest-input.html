@@ -8,11 +8,10 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 		/>
-		<!-- <link
+		<link
 			rel="stylesheet"
 			href="{{url_for('static', filename='styles.css')}}"
-		/> -->
-		<link rel="stylesheet" href="../static/styles.css" />
+		/>
 
 		<title>Manifest Input</title>
 	</head>
@@ -37,30 +36,31 @@
 			<div class="hero-body">
 				<div class="container has-text-centered">
 					<div class="column">
-						<a href="landing.html"
-							><button
+						<a href="{{ url_for('landing_page') }}">
+							<button
 								id="upload-quit-btn"
 								class="button is-large quit-btn"
+								name="manifest-quit"
 							>
 								Quit
-							</button></a
-						>
+							</button>
+						</a>
 					</div>
 				</div>
 				<div class="container has-text-centered">
 					<div class="column">
-						<a href="index.html"
-							><button
+						<form action="#" method="post">
+							<button
 								id="upload-cont-btn"
 								class="button is-success is-large cont-btn"
+								name="manifest-continue"
 							>
 								Continue
-							</button></a
-						>
+							</button>
+						</form>
 					</div>
 				</div>
 			</div>
 		</section>
 	</body>
-	<script src="modal.js"></script>
 </html>

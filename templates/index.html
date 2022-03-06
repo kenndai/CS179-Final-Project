@@ -8,11 +8,10 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 		/>
-		<!-- <link
+		<link
 			rel="stylesheet"
 			href="{{url_for('static', filename='styles.css')}}"
-		/> -->
-		<link rel="stylesheet" href="../static/styles.css" />
+		/>
 
 		<title>Main</title>
 	</head>
@@ -38,7 +37,7 @@
 										Download outbound manifest
 									</a>
 									<a
-										href="manifest-input.html"
+										href="{{ url_for('manifest_input_page') }}"
 										class="navbar-item is-size-5 has-text-centered"
 									>
 										Upload new manifest
@@ -59,23 +58,17 @@
 							Finish
 						</button>
 						<a
-							href="landing.html"
+							href="{{ url_for('landing_page') }}"
 							class="button is-large navbar-item is-danger"
 							>Sign Out</a
 						>
-						<!-- <button class="button is-large navbar-item is-danger">
-							<a href="landing.html">Sign Out</a>
-						</button> -->
 					</div>
 				</div>
 			</nav>
 
 			<section class="hero-body">
 				<section id="option-buttons">
-					<button
-						id="unload-button"
-						class="button is-large is-size-6 my-6"
-					>
+					<button id="unload-button" class="button is-large my-6">
 						Unload
 					</button>
 					<button
