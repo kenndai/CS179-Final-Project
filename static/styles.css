@@ -59,3 +59,30 @@ btn {
 	flex-shrink: 0;
 	justify-content: center;
 }
+
+.modal-background {
+	background-color: rgba(10, 10, 10, 0.2);
+}
+
+#log-entry-modal .modal-card-body {
+	padding: 5px 10px;
+}
+#log-entry-modal .modal-card-foot {
+	padding: 10px 20px;
+}
+
+.reminder-head {
+	padding: 10px;
+}
+
+.reminder-body {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
+#weight-entry-modal .modal-card-head {
+	padding: 18px;
+}
+#weight-entry-modal .modal-card-foot {
+	padding: 10px 20px;
+}
