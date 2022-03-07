@@ -6,7 +6,11 @@ app = Flask(__name__)
 def landing_page():
     if request.method == "POST":
         user = request.form["name"]
-        return redirect(url_for("manifest_input_page"))
+        if user == "":
+            return render_template("landing-page.html")
+        else:
+            #log file record the name of login and date
+            return redirect(url_for("manifest_input_page"))
     else:
         return render_template("landing-page.html")
 
