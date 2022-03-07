@@ -11,8 +11,15 @@
 		<!-- <link
 			rel="stylesheet"
 			href="{{url_for('static', filename='styles.css')}}"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{url_for('static', filename='modal.js')}}"
 		/> -->
-		<link rel="stylesheet" href="../static/css/styles.css" />
+
+		<!-- testing -->
+		<link rel="stylesheet" href="../static/styles.css" />
+		<script src="../static/modal.js" async></script>
 
 		<title>Main</title>
 	</head>
@@ -38,7 +45,7 @@
 										Download outbound manifest
 									</a>
 									<a
-										href="manifest-input.html"
+										href="{{ url_for('manifest_input_page') }}"
 										class="navbar-item is-size-5 has-text-centered"
 									>
 										Upload new manifest
@@ -46,7 +53,11 @@
 								</div>
 							</div>
 						</button>
-						<button class="button is-large navbar-item">
+						<button
+							id="log-entry-button"
+							data-modal-target="#log-entry-modal"
+							class="button is-large navbar-item"
+						>
 							Log Entry
 						</button>
 						<button
@@ -55,17 +66,18 @@
 						>
 							Ship Name
 						</button>
-						<button class="button is-large navbar-item is-success">
+						<button
+							id="finish-button"
+							data-modal-target="#finish-modal"
+							class="button is-large navbar-item is-success"
+						>
 							Finish
 						</button>
 						<a
-							href="landing.html"
+							href="{{ url_for('landing_page') }}"
 							class="button is-large navbar-item is-danger"
 							>Sign Out</a
 						>
-						<!-- <button class="button is-large navbar-item is-danger">
-							<a href="landing.html">Sign Out</a>
-						</button> -->
 					</div>
 				</div>
 			</nav>
@@ -73,10 +85,11 @@
 			<section class="hero-body">
 				<section id="option-buttons">
 					<button
-						id="unload-button"
-						class="button is-large is-size-6 my-6"
+						data-modal-target="#weight-entry-modal"
+						id="Load-button"
+						class="button is-large my-6"
 					>
-						Unload
+						Load
 					</button>
 					<button
 						id="confirm-button"
@@ -91,5 +104,97 @@
 				</section>
 			</section>
 		</section>
+
+		<!-- Modals-->
+		<div id="log-entry-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">Write your log entry</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
+				<section class="modal-card-body has-text-black">
+					<textarea
+						class="textarea"
+						placeholder="e.g. Container weighs less than expected"
+					></textarea>
+				</section>
+				<footer class="modal-card-foot">
+					<button class="button is-success">Submit</button>
+				</footer>
+			</div>
+		</div>
+
+		<div id="finish-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header
+					class="modal-card-head has-background-warning reminder-head"
+				>
+					<p class="modal-card-title">Reminder</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
+				<section class="modal-card-body has-text-black reminder-body">
+					<p class="modal-card-title is-size-4 has-text-centered">
+						Download and send out outbound manifest
+					</p>
+				</section>
+			</div>
+		</div>
+
+		<div id="weight-entry-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">
+						Weight of container: (name of container)
+					</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
+				<section class="modal-card-body has-text-black">
+					<form action="">
+						<input
+							class="input is-medium"
+							type="number"
+							min="0"
+							min="99999"
+							placeholder="Container Weight (0 - 99999)"
+						/>
+					</form>
+				</section>
+				<footer class="modal-card-foot">
+					<button class="button is-success">Enter</button>
+				</footer>
+			</div>
+		</div>
+
+		<div id="balanced-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header
+					class="modal-card-head has-background-primary reminder-head"
+				>
+					<p class="modal-card-title">Notification</p>
+					<button class="delete" aria-label="close"></button>
+				</header>
+				<section class="modal-card-body has-text-black reminder-body">
+					<p class="modal-card-title is-size-4 has-text-centered">
+						Ship is balanced!
+					</p>
+				</section>
+			</div>
+		</div>
 	</body>
 </html>

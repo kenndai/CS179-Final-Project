@@ -8,11 +8,15 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 		/>
-		<!-- <link
+		<link
 			rel="stylesheet"
 			href="{{url_for('static', filename='styles.css')}}"
-		/> -->
-		<link rel="stylesheet" href="../static/css/styles.css" />
+		/>
+		<!-- <link rel="stylesheet" href="../static/styles.css" /> -->
+		<script
+			defer
+			src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+		></script>
 
 		<title>Manifest Input</title>
 	</head>
@@ -21,15 +25,38 @@
 			<div class="hero-head">
 				<div
 					id="file-title"
-					class="container title has-text-centered has-text-white"
+					class="container title has-text-centered has-text-white my-3"
 				>
 					<h1>File Upload</h1>
 				</div>
 			</div>
-			<div class="hero-body">
+			<div id="file-container" class="hero-body">
 				<div class="container title has-text-centered has-text-white">
-					<h2>Upload Manifest</h2>
-					<input type="file" />
+					<h2 class="mt-6">Upload Manifest</h2>
+				</div>
+				<div class="container">
+					<div id="file-upload" class="file has-name is-boxed">
+						<label class="file-label">
+							<form action="">
+								<input
+									class="file-input"
+									type="file"
+									name="manifest"
+								/>
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fas fa-upload"></i>
+									</span>
+									<span class="file-label">
+										Choose a file…
+									</span>
+								</span>
+								<span class="file-name has-text-centered">
+									No file uploaded
+								</span>
+							</form>
+						</label>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -37,30 +64,54 @@
 			<div class="hero-body">
 				<div class="container has-text-centered">
 					<div class="column">
+<<<<<<< HEAD
 						<a href="http://127.0.0.1:5000/"
 							><button
+=======
+						<a href="{{ url_for('landing_page') }}">
+							<button
+>>>>>>> 20e1a41ad04c3cbdf9cc5823788436a946209b48
 								id="upload-quit-btn"
 								class="button is-large quit-btn"
+								name="manifest-quit"
 							>
 								Quit
-							</button></a
-						>
+							</button>
+						</a>
 					</div>
 				</div>
 				<div class="container has-text-centered">
 					<div class="column">
+<<<<<<< HEAD
 						<a href="http://127.0.0.1:5000/main"
 							><button
+=======
+						<form action="#" method="post">
+							<button
+>>>>>>> 20e1a41ad04c3cbdf9cc5823788436a946209b48
 								id="upload-cont-btn"
 								class="button is-success is-large cont-btn"
+								name="manifest-continue"
 							>
 								Continue
-							</button></a
-						>
+							</button>
+						</form>
 					</div>
 				</div>
 			</div>
 		</section>
 	</body>
-	<script src="modal.js"></script>
+	<script>
+		const fileInput = document.querySelector(
+			"#file-upload input[type=file]"
+		);
+		fileInput.onchange = () => {
+			if (fileInput.files.length > 0) {
+				const fileName = document.querySelector(
+					"#file-upload .file-name"
+				);
+				fileName.textContent = fileInput.files[0].name;
+			}
+		};
+	</script>
 </html>
