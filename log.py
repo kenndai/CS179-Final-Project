@@ -29,5 +29,3 @@ def log(log_contents):
 def prepend_zero(seconds):
     if seconds < 10: return '0' + str(seconds)
     else: return str(seconds)
-
-log("Anvil Signs In")
