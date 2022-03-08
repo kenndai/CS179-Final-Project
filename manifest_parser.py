@@ -25,6 +25,7 @@ def parse(userFile):
                 "text": "",
 
             }
+            
             container["xy-coordinate"] = [x_coord, y_coord]
             container["weight"] = cleanLine[1]
             container["text"] = cleanLine[2]
