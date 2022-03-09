@@ -17,6 +17,7 @@
 		<title>Manifest Input</title>
 	</head>
 	<body>
+	<form action="#" method="POST" enctype = "multipart/form-data">
 		<section class="hero is-halfheight">
 			<div class="hero-head">
 				<div
@@ -30,12 +31,14 @@
 				<div class="container title has-text-centered has-text-white">
 					<h2 class="mt-6">Upload Manifest</h2>
 				</div>
+
 				<div class="container">
 					<div id="file-upload" class="file has-name is-boxed">
 						<label class="file-label">
-							<form action="">
+							
 								<input
 									class="file-input"
+									id="file-input"
 									type="file"
 									name="manifest"
 								/>
@@ -50,10 +53,11 @@
 								<span class="file-name has-text-centered">
 									No file uploaded
 								</span>
-							</form>
+							<!--</form>-->
 						</label>
 					</div>
 				</div>
+
 			</div>
 		</section>
 		<section class="hero is-halfheight">
@@ -73,19 +77,20 @@
 				</div>
 				<div class="container has-text-centered">
 					<div class="column">
-						<form action="#" method="post">
-							<button
+							<input
+								type="submit"
+								value="Continue"
 								id="upload-cont-btn"
 								class="button is-success is-large cont-btn"
 								name="manifest-continue"
 							>
-								Continue
-							</button>
-						</form>
+							</input>
+							
 					</div>
 				</div>
 			</div>
 		</section>
+	</form>
 	</body>
 	<script>
 		const fileInput = document.querySelector(
@@ -99,5 +104,24 @@
 				fileName.textContent = fileInput.files[0].name;
 			}
 		};
+
+		//continue button press
+		/*document.getElementById("upload-cont-btn").onclick = function() {
+			file_path = document.getElementById("file-input").value;
+			console.log('ajax');
+			$.ajax({
+				type: "POST",
+				url: "/main",
+				data: JSON.stringify(file_path),
+				contentType: "application/json",
+				success: function() {
+					console.log('new page loaded: ')
+				},
+				error: function (result, status) {
+    				console.log(result);
+  				},
+				dataType: "json"
+			});
+        };*/
 	</script>
 </html>
