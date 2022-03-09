@@ -26,14 +26,17 @@ def manifest_input_page():
     if request.method == "POST":
         file = request.files['manifest']
         print(file.filename)
+
         if file.filename == "":
             print("no file selected")
             return render_template("manifest-input.html")
+
         elif file and allowed_file(file.filename):
             #save file to data folder
             filename = secure_filename(file.filename)
             file.save(os.path.join("data", filename))
             return redirect(url_for("main_page"))
+            
         else:
             print("file selected must be .txt file")
             return render_template("manifest-input.html")
