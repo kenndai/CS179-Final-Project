@@ -1,5 +1,7 @@
 import os
-from flask import Flask, redirect, render_template, request, url_for
+import manifest_parser
+
+from flask import Flask, redirect, render_template, request, url_for, jsonify
 from werkzeug.utils import secure_filename
 from handle_log import *
 
@@ -8,6 +10,8 @@ ALLOWED_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 
 # global variables
+filename = "CunardBlue.txt"
+condensedManifest = []
 
 @app.route("/", methods=["POST", "GET"])
 def landing_page():
@@ -33,6 +37,7 @@ def manifest_input_page():
 
         elif file and allowed_file(file.filename):
             #save file to data folder
+            global filename
             filename = secure_filename(file.filename)
             file.save(os.path.join("data", filename))
             return redirect(url_for("main_page"))
@@ -57,8 +62,18 @@ def main_page():
 
         #looks up function to call for given request_form_key
         post_dict[request_form_key](request.form[request_form_key])
+        return render_template("index.html")
+    
+    else:
+        #code runs here when continue button pressed
+        global condensedManifest
+        condensedManifest = manifest_parser.parse(filename)
+        print(filename)
+        return render_template("index.html")
 
-    return render_template("index.html")
+@app.route("/main-manifest-loaded", methods=["GET"])
+def send_manifest_to_main_page():
+    return jsonify(condensedManifest)
 
 if __name__ == "__main__":
     app.run(debug=True)

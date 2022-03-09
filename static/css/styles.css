@@ -1,5 +1,5 @@
 body {
-	color: white;
+	color: black;
 	background-color: rgb(90, 106, 119);
 }
 
@@ -84,3 +84,89 @@ btn {
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
 } */
+
+
+.grid {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    margin-left: 20px;
+    padding: 0;
+  }
+
+.grid>div {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.grid>div>div {
+    border: 1px solid black;
+    height: 60px;
+    width: 65px;
+    margin: 0px;
+    padding-left: 1px;
+    background-color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.right-side-bar {
+    height: 100%;
+    width: 250px;
+    min-width: 200px;
+    margin-right: 0;
+    margin-left: 10px;
+    background-color: white;
+	font-size: 17px;
+}
+
+.time-info-box {
+    border: 2px solid black;
+    border-bottom: 0;
+    height: 75px;
+    margin: 0;
+    padding: 10px;
+	font-weight: bold;
+}
+
+.move-info-box {
+    border: 2px solid black;
+    height: 520px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.buffer-grid{
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    border: 1px solid black;
+}
+
+.buffer-grid>div {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.buffer-grid>div>div {
+    border: 1px solid black;
+    height: 45px;
+    width: 50px;
+    margin: 0px;
+    padding: 0px;
+    background-color: #ffffff;
+}
+
+.hero-body {
+    padding: 0;
+    margin: auto;
+    margin-top: 0;
+    
+}
