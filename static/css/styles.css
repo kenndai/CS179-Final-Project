@@ -67,7 +67,12 @@ btn {
 #log-entry-modal .modal-card-body {
 	padding: 5px 10px;
 }
-#log-entry-modal .modal-card-foot {
+
+#weight-entry-modal .modal-card-head {
+	padding: 18px;
+}
+
+.modal-card-foot {
 	padding: 10px 20px;
 }
 
@@ -75,14 +80,7 @@ btn {
 	padding: 10px;
 }
 
-.reminder-body {
+/* .reminder-body {
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
-}
-
-#weight-entry-modal .modal-card-head {
-	padding: 18px;
-}
-#weight-entry-modal .modal-card-foot {
-	padding: 10px 20px;
-}
+} */
