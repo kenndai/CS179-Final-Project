@@ -1,7 +1,7 @@
 import os
 import manifest_parser
 
-from flask import Flask, redirect, render_template, request, url_for, jsonify
+from flask import Flask, redirect, render_template, request, url_for, jsonify, Response
 from werkzeug.utils import secure_filename
 from handle_log import *
 
@@ -57,12 +57,18 @@ def allowed_file(filename):
 @app.route("/main", methods=["POST", "GET"])
 def main_page():
     if request.method == "POST":
-        # get "name" attribute from input
-        request_form_key = list(request.form.keys())[0]
+        weight = request.form["weight-entry"]
+        print(weight)
+        if weight != "":
+            return Response(status = 200)
+        
+        else:
+            # get "name" attribute from input
+            request_form_key = list(request.form.keys())[0]
 
-        #looks up function to call for given request_form_key
-        post_dict[request_form_key](request.form[request_form_key])
-        return render_template("index.html")
+            #looks up function to call for given request_form_key
+            post_dict[request_form_key](request.form[request_form_key])
+            return render_template("index.html")
     
     else:
         #code runs here when continue button pressed

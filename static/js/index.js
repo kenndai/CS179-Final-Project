@@ -1,3 +1,8 @@
+function gotManifest() {
+    gotManifest.state = false;
+}
+
+var manifest_state = new gotManifest();
 
 //makes the grid boxes for buffer and main grid zones
 window.onload = function makeGrid() {
@@ -58,18 +63,22 @@ window.onload = function makeGrid() {
 
     console.log('buffer grid loaded');
 
-    //fetch manifest data from python backend
-    fetch("/main-manifest-loaded")
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            manifest_list = data
-            for (const element of manifest_list) {
-                //console.log(element.coordinate)
-                id = "cell-" + element.coordinate[0] + "-" + element.coordinate[1]
-                //console.log(id);
-                document.getElementById(id).innerHTML = element.name;
-            }
-        })
-        .catch(err => { console.log(err); })
+    if (!manifest_state.state) {
+        manifest_state.state == true;
+        console.log(manifest_state.state)
+        //fetch manifest data from python backend
+        fetch("/main-manifest-loaded")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                manifest_list = data
+                for (const element of manifest_list) {
+                    //console.log(element.coordinate)
+                    id = "cell-" + element.coordinate[0] + "-" + element.coordinate[1]
+                    //console.log(id);
+                    document.getElementById(id).innerHTML = element.name;
+                }
+            })
+            .catch(err => { console.log(err); })
+    }
 }
