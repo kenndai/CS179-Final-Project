@@ -9,8 +9,8 @@
 			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 		/>
 		<link rel="stylesheet" href="../static/css/styles.css" />
-		<script src="../static/js/modal.js" async></script>
-		<script src="../static/js/index.js"></script>
+		<script src="../static/js/index.js" defer></script>
+		<script src="../static/js/modal.js" defer></script>
 
 		<title>Main</title>
 	</head>
@@ -87,7 +87,7 @@
 			<section class="hero-body">
 				<section id="option-buttons">
 					<button
-						data-modal-target="#weight-entry-modal"
+						data-modal-target="#num-containers-modal"
 						id="Load-button"
 						class="button is-large my-6"
 					>
@@ -113,21 +113,21 @@
 
 				<div class="right-side-bar">
 					<div class="time-info-box">
-						<div>Total Est. Time: </div>
-						<div>Est. Time: </div>
+						<div>Total Est. Time:</div>
+						<div>Est. Time:</div>
 					</div>
 					<div class="move-info-box">
 						<div>Empty Box For Steps</div>
 					</div>
 				</div>
-
 			</section>
 
 			<div class="buffer-grid" id="buffer-grid"></div>
-
 		</section>
 
 		<!-- Modals-->
+
+		<!--  -->
 		<div id="log-entry-modal" class="modal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
@@ -146,6 +146,41 @@
 							name="operator-log-entry"
 							placeholder="e.g. Container weighs less than expected"
 						></textarea>
+					</section>
+					<footer class="modal-card-foot">
+						<button
+							data-close-button
+							type="submit"
+							class="button is-success"
+						>
+							Submit
+						</button>
+					</footer>
+				</form>
+			</div>
+		</div>
+
+		<div id="num-containers-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">
+						How many containers are you loading?
+					</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
+				<form action="#" method="post">
+					<section class="modal-card-body has-text-black">
+						<input
+							class="input is-medium"
+							type="number"
+							name="num-containers"
+							placeholder="Number of containers"
+						/>
 					</section>
 					<footer class="modal-card-foot">
 						<button
@@ -224,6 +259,7 @@
 			</div>
 		</div>
 
+		<!-- should show when ship has been balanced -->
 		<div id="balanced-modal" class="modal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
@@ -257,6 +293,7 @@
 			</div>
 		</div>
 		<script>
+			// anchor tag acts like a button
 			function download_manifest() {
 				document.getElementById("download-manifest-form").submit();
 			}
