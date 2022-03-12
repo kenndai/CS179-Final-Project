@@ -58,18 +58,34 @@ window.onload = function makeGrid() {
 
     console.log('buffer grid loaded');
 
-    //fetch manifest data from python backend
-    fetch("/main-manifest-loaded")
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            manifest_list = data
-            for (const element of manifest_list) {
-                //console.log(element.coordinate)
-                id = "cell-" + element.coordinate[0] + "-" + element.coordinate[1]
-                //console.log(id);
-                document.getElementById(id).innerHTML = element.name;
-            }
-        })
-        .catch(err => { console.log(err); })
+    function gotManifest() {
+        gotManifest.state = false;
+        gotManifest.count = 0;
+    }
+    
+    var manifest_state = new gotManifest();
+
+    //loads the manifest into the grid boxes when continue button pressed from prior page
+    if (!manifest_state.state) {
+        manifest_state.state = true;
+        manifest_state.count = manifest_state.count + 1;
+        console.log("manifest is loaded this many times", manifest_state.count)
+        //fetch manifest data from python backend
+        fetch("/main-manifest-loaded")
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data);
+                manifest_list = data
+                for (const element of manifest_list) {
+                    //console.log(element.coordinate)
+                    id = "cell-" + element.coordinate[0] + "-" + element.coordinate[1]
+                    //console.log(id);
+                    document.getElementById(id).innerHTML = element.name;
+                }
+            })
+            .catch(err => { console.log(err); })
+    }
+
+    //balance function called when balance button pressed
+
 }
