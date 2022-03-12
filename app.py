@@ -1,5 +1,4 @@
-import os
-import manifest_parser
+import os, manifest_parser, ship
 
 from flask import Flask, redirect, render_template, request, url_for, jsonify, Response
 from werkzeug.utils import secure_filename
@@ -12,6 +11,7 @@ app = Flask(__name__)
 # global variables
 filename = "CunardBlue.txt"
 condensedManifest = []
+myShip = ship.Ship()
 
 @app.route("/", methods=["POST", "GET"])
 def landing_page():
@@ -57,11 +57,10 @@ def allowed_file(filename):
 @app.route("/main", methods=["POST", "GET"])
 def main_page():
     if request.method == "POST":
-        weight = request.form["weight-entry"]
-        print(weight)
-        if weight != "":
-            return Response(status = 200)
-        
+        container_count = request.form["num-containers"]
+        print(container_count)
+        if container_count != "":
+            return ('', 204)
         else:
             # get "name" attribute from input
             request_form_key = list(request.form.keys())[0]
@@ -73,12 +72,18 @@ def main_page():
     else:
         #code runs here when continue button pressed
         global condensedManifest
+        global myShip
+
         condensedManifest = manifest_parser.parse(filename)
-        print(filename)
+        myShip.fillGrid(condensedManifest)
+
+        #print(filename)
         return render_template("index.html")
 
+# this route runs when mainpage is loaded for the first time
 @app.route("/main-manifest-loaded", methods=["GET"])
 def send_manifest_to_main_page():
+    print(myShip.grid[0][4].name) #test code
     return jsonify(condensedManifest)
 
 if __name__ == "__main__":
