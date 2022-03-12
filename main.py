@@ -1,8 +1,7 @@
-from ast import operator
 import queue
 from problem import *
 
-def a_star(problem: ShipProblem):
+def a_star(problem : ShipProblem):
     node_queue = queue.PriorityQueue()
 
     # initial ShipNode has distance cost of 0, initial problem state, and no parent state
@@ -34,7 +33,7 @@ def append_cost(ship_node : ShipNode):
     gn = ship_node.distance_cost
 
     # check if the ShipNode is the initial ShipNode, initial ShipNode doesn't need a hn
-    if (gn == 0): return [gn, ship_node]
+    if (gn == 0): return [0, ship_node]
 
     hn = heuristic_cost(ship_node.ship_state)
     return [gn + hn, ship_node]
@@ -61,11 +60,11 @@ def expand_node(ship_node : ShipNode):
     new_ship_nodes = []
 
     # list of operations to generate new ship states
-    operations = []
+    operations = [ShipProblem.move_crane_first, ShipProblem.move_crane_second, ShipProblem.move_crane_third, ShipProblem.move_crane_fourth]
 
     # each operation on ship state returns a new ship state
     for operation in operations:
-        new_ship_state = operation(ship_node.ship_state)
+        new_ship_states = operation(ship_node.ship_state)
         # TODO: Compare if new_ship_state is the same as parent_ship_state, if not, append to new_ship_nodes
         # TODO: Change how much the distance_cost is incremented
         new_ship_nodes.append(ShipNode(distance_cost = ship_node.distance_cost + 1, ship_state = new_ship_state, parent_ship_state = ship_node))

@@ -1,8 +1,3 @@
-from turtle import left
-from sqlalchemy import true
-from sympy import false
-
-
 class Node:
     def __init__(self, coordinate, name=None, text=None, weight=None):
         self.coordinate = coordinate
@@ -36,9 +31,9 @@ class Ship:
 
     def balance(self):
         if not self.checkIfBalance():
-            return true
+            return True
         else:
-            return false
+            return False
 
     def checkIfBalance(self):
         left_sum = 0
@@ -51,7 +46,7 @@ class Ship:
                     right_sum += self.grid[i][j]
         #check if left or right sum are not 0, cannot divide by 0, return -1 if so
         if left_sum == 0 and right_sum == 0:
-            return true
+            return True
         elif left_sum == 0 and right_sum != 0:
             return -1
         elif left_sum != 0 and right_sum == 0:
@@ -59,9 +54,9 @@ class Ship:
         else:
             num = left_sum/right_sum
             if num >= .9 or num <= .1:
-                return true
+                return True
             else:
-                return false
+                return False
 
 
 
