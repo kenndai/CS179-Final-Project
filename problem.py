@@ -6,27 +6,20 @@
 #         self.ship_grid = ship_grid
 #         self.parent_ship_grid = parent_ship_grid
 import copy
-
-from sqlalchemy import column
 class ShipProblem:
 
-    __slots__ = ["grid", "parent", "distance_cost", "top_containers"]
+    __slots__ = ["distance_cost", "function_cost", "grid", "parent", "top_containers"]
 
     def __init__(self, distance_cost = 0, grid = None, parent = None):
         self.distance_cost = distance_cost
-        # self.grid = grid
-        self.grid = [
-            {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
-            {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
-            {'coordinate': ['01', '06'], 'weight': 2500, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-            {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['02', '06'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['03', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['05', '01'], 'weight': 99999, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
+        self.function_cost = 0
+        self.grid = grid
         self.parent = parent
 
         self.top_containers = self.set_top_containers()
+
+    def __lt__(self, other):
+        return self.function_cost < other.function_cost
 
     ## finds and sets the top containers for all columns
     def set_top_containers(self):
@@ -86,13 +79,3 @@ class ShipProblem:
             
             new_grids.append(new_grid)
         return new_grids
-
-problem2 = ShipProblem()
-
-# for container in problem2.top_containers.values():
-#     print(container)
-
-for grid in problem2.move_crane(6):
-    for container in grid:
-        print(container)
-    print()
