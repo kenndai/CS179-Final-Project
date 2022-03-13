@@ -52,6 +52,7 @@ class ShipProblem:
 
     ## position crane over a column and expand
     ## returns a list of grids
+    # TODO: Return the manhattan distance
     def move_crane(self, column_num):
         new_grids = []
 
