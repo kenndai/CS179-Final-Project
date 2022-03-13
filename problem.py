@@ -34,8 +34,8 @@ class ShipProblem:
         }
 
         for container in ship_grid:
-            curr_x = int(container["coordinate"][1])
             curr_y = int(container["coordinate"][0])
+            curr_x = int(container["coordinate"][1])
 
             top_x_container = top_containers[curr_x] 
             if top_containers[curr_x] == None or curr_y > int(top_x_container["coordinate"][0]):
@@ -44,18 +44,20 @@ class ShipProblem:
         return top_containers
 
     ## position crane over a column and expand
-    ## returns a list of grids
-    # TODO: Return the manhattan distance
+    ## returns a list of ShipProblem instances
     def move_crane(self, column_num):
-        new_grids = []
+        new_ships = []
 
         # return if top container in a column is an unused slot or "NAN" container 
         if self.top_containers[column_num] == None or self.top_containers[column_num]["text"] == "NAN": 
             print("no container to grab")
             return [[]]
 
-        # get the top container in the first column
+        # get the top container in the desired column
         top_container = self.top_containers[column_num]
+        top_y_coord = int(top_container["coordinate"][0])
+        top_x_coord = int(top_container["coordinate"][1])
+
         # find the index of the container in the grid
         index_in_grid = self.grid.index(top_container)
 
@@ -63,7 +65,7 @@ class ShipProblem:
             # skip the column you're moving away from
             if i == column_num: continue
 
-            # makes a deepcopy of list, i hate python
+            # makes a deepcopy of the ship's grid that will be modified, i hate python
             new_grid = copy.deepcopy(self.grid)
 
             # get top container of the i-th column
@@ -72,10 +74,31 @@ class ShipProblem:
             # place container in the first row of the i-th column
             if i_top_container == None:
                 new_grid[index_in_grid]["coordinate"] = [1, i]
+                manhattan_distance = abs(top_y_coord - 1) + abs(top_x_coord - i)
             # place container one higher than the top container in the i-th column
             else: 
-                y_coord = int(i_top_container["coordinate"][0])
-                new_grid[index_in_grid]["coordinate"] = [y_coord + 1, i]    
-            
-            new_grids.append(new_grid)
-        return new_grids
+                new_y_coord = int(i_top_container["coordinate"][0]) + 1
+                new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
+                manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
+
+            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, parent = self))
+        return new_ships
+
+ship = ShipProblem(grid=[
+        {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
+        {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
+        {'coordinate': ['01', '06'], 'weight': 2500, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
+        {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+        {'coordinate': ['02', '06'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+        {'coordinate': ['03', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+        {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+        {'coordinate': ['05', '01'], 'weight': 99999, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}])
+
+
+all_new_ships = []
+for i in range(1, 7):
+    new_ships = ship.move_crane(i)
+    if new_ships == [[]]: continue
+    all_new_ships += new_ships
+
+print(all_new_ships)

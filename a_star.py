@@ -52,17 +52,14 @@ def enqueue_nodes(queue, ships):
 # return value is passed into enqueueNodes()
 def expand_node(ship : ShipProblem):
     # list that holds generated ShipNodes
-    new_ships = []
+    all_new_ships = []
 
     # each operation on ship grid returns a new ship grid
     for i in range(1, 7):
-        # move_crane returns a list of grids
-        new_ship_grids = ship.move_crane(i)
-
-        # TODO: Compare if new_ship_grid is the same as parent_ship_grid, if not, append to new_ships
-        for new_ship_grid in new_ship_grids:
-            if new_ship_grid == [[]]: continue
-            new_ships.append(ShipProblem(distance_cost = ship.distance_cost + 1, grid = new_ship_grid, parent = ship))
+        # move_crane returns a list of ShipProblems
+        new_ships = ship.move_crane(i)
+        if new_ships == [[]]: continue
+        all_new_ships += new_ships
 
     return new_ships
 
