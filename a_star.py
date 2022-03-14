@@ -1,11 +1,14 @@
 import queue
 from problem import *
 
+nodes_expanded = 0
 def a_star(ship : ShipProblem):
     node_queue = queue.PriorityQueue()
 
     # append a list containing the function cost and initial ship
     node_queue.put(append_cost(ship))
+    global nodes_expanded 
+    nodes_expanded += 1
 
     while (1):
         if (node_queue.empty()):
@@ -33,11 +36,11 @@ def append_cost(ship : ShipProblem):
     return ship
 
 
-# Purpose: takes in a ship grid from ShipNode and returns the heuristic cost
+# Purpose: takes in a ship grid from Ship and returns the heuristic cost
 def heuristic_cost(ship_grid : ShipProblem.grid):
     return 1
 
-# Purpose: takes in a ship grid from ShipNode and returns if the ship is balanced
+# Purpose: takes in a ship grid from a Ship and returns if the ship is balanced
 def is_balanced(ship_grid : ShipProblem.grid):
     left_mass = 0
     right_mass = 0
@@ -57,6 +60,8 @@ def is_balanced(ship_grid : ShipProblem.grid):
 def enqueue_nodes(queue, ships):
     for ship in ships:
         queue.put(append_cost(ship))
+        global nodes_expanded
+        nodes_expanded += 1
     return queue
 
 # Purpose: takes in a ShipNode and "expands it," returning new, valid ship grids.  
@@ -89,5 +94,6 @@ def main():
     grid = a_star(ship)
     for container in grid:
         print(container)
+    print(nodes_expanded)
 
 main()

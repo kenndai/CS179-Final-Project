@@ -1,20 +1,13 @@
-# class ShipNode:
-#     __slots__ = ["distance_cost", "ship_grid", "parent_ship_grid"]
-
-#     def __init__(self, distance_cost, ship_grid, parent_ship_grid = None):
-#         self.distance_cost = distance_cost
-#         self.ship_grid = ship_grid
-#         self.parent_ship_grid = parent_ship_grid
 import copy
 class ShipProblem:
 
-    __slots__ = ["distance_cost", "function_cost", "grid", "parent", "top_containers"]
+    __slots__ = ["distance_cost", "function_cost", "grid", "last_column", "top_containers"]
 
-    def __init__(self, distance_cost = 0, grid = None, parent = None):
+    def __init__(self, distance_cost = 0, grid = None, last_column = 0):
         self.distance_cost = distance_cost
         self.function_cost = 0
         self.grid = grid
-        self.parent = parent
+        self.last_column = last_column
 
         self.top_containers = self.set_top_containers()
 
@@ -46,12 +39,16 @@ class ShipProblem:
     ## position crane over a column and expand
     ## returns a list of ShipProblem instances
     def move_crane(self, column_num):
-        new_ships = []
+        # dont expand a column where you last placed a container, redundant
+        if column_num == self.last_column: 
+            return [[]]
 
         # return if top container in a column is an unused slot or "NAN" container 
         if self.top_containers[column_num] == None or self.top_containers[column_num]["text"] == "NAN": 
-            print("no container to grab")
+            # print("no container to grab")
             return [[]]
+
+        new_ships = []
 
         # get the top container in the desired column
         top_container = self.top_containers[column_num]
@@ -81,5 +78,5 @@ class ShipProblem:
                 new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
                 manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
 
-            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, parent = self))
+            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, last_column = i))
         return new_ships
