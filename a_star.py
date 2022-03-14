@@ -39,7 +39,19 @@ def heuristic_cost(ship_grid : ShipProblem.grid):
 
 # Purpose: takes in a ship grid from ShipNode and returns if the ship is balanced
 def is_balanced(ship_grid : ShipProblem.grid):
-    return 
+    left_mass = 0
+    right_mass = 0
+    balanced_mass = 0
+    for container in ship_grid:
+        x_coord = int(container["coordinate"][1])
+        if (x_coord <= 3):
+            left_mass += container["weight"]
+        else:
+            right_mass += container["weight"]
+
+    balanced_mass = (left_mass + right_mass) / 2
+
+    return (abs(left_mass - right_mass) / balanced_mass) <= 0.1
 
 # Purpose: takes in a new list of ShipNodes
 def enqueue_nodes(queue, ships):
@@ -67,13 +79,15 @@ def main():
     grid = [
         {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
         {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
-        {'coordinate': ['01', '06'], 'weight': 2500, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
+        {'coordinate': ['01', '06'], 'weight': 6000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
         {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
         {'coordinate': ['02', '06'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
         {'coordinate': ['03', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
         {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-        {'coordinate': ['05', '01'], 'weight': 99999, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
+        {'coordinate': ['05', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
     ship = ShipProblem(grid=grid)
-    a_star(ship)
+    grid = a_star(ship)
+    for container in grid:
+        print(container)
 
 main()
