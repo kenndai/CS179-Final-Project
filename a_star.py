@@ -19,7 +19,7 @@ def a_star(ship : ShipProblem):
             top_ship = node_queue.get()
 
             # check if ship is balanced
-            if (is_balanced(top_ship.grid)):
+            if (is_balanced(top_ship)):
                 return top_ship.grid
             else:
                 enqueue_nodes(queue = node_queue, ships = expand_node(top_ship))
@@ -32,27 +32,70 @@ def append_cost(ship : ShipProblem):
     if gn == 0: 
         ship.function_cost = 0
     else: 
-        ship.function_cost = gn + heuristic_cost(ship.grid)
+        ship.function_cost = gn + heuristic_cost(ship)
     return ship
 
 
-# Purpose: takes in a ship grid from Ship and returns the heuristic cost
-def heuristic_cost(ship_grid : ShipProblem.grid):
-    return 1
-
-# Purpose: takes in a ship grid from a Ship and returns if the ship is balanced
-def is_balanced(ship_grid : ShipProblem.grid):
+# Purpose: takes in a ShipProblem and returns the heuristic cost
+# heurisitc measured in estimated minutes to move all containers
+def heuristic_cost(ship : ShipProblem):
     left_mass = 0
     right_mass = 0
-    balanced_mass = 0
-    for container in ship_grid:
-        x_coord = int(container["coordinate"][1])
-        if (x_coord <= 3):
-            left_mass += container["weight"]
-        else:
-            right_mass += container["weight"]
+    balanced_mass = ship.mass / 2
+    left_containers = []
+    right_containers = []
 
-    balanced_mass = (left_mass + right_mass) / 2
+    for container in ship.grid:
+        x_coord = int(container["coordinate"][1])
+        if (x_coord <= 3): 
+            left_mass += container["weight"]
+            left_containers.append(container)
+        else: 
+            right_mass += container["weight"]
+            right_containers.append(container)
+
+    ## find number of containers to move
+    if left_mass < right_mass:
+        defecit = balanced_mass - left_mass
+        defecit_side = "left"
+        # sort the right side in descending order
+        sorted_containers = sorted(right_containers, key= lambda i : i["weight"], reverse = True)
+    else: 
+        defecit = balanced_mass - right_mass
+        defecit_side = "right"
+        # sort the left side in descending order
+        sorted_containers  = sorted(left_containers, key= lambda i : i["weight"], reverse = True)
+
+    container_shifts = 0
+    computed_minutes = 0
+    remaining_defecit = defecit
+    for container in sorted_containers:
+        if container["weight"] <= remaining_defecit:
+            container_shifts += 1
+            remaining_defecit -= container["weight"]
+            if defecit_side == "left":
+                computed_minutes += abs(int(container["coordinate"][1]) - 3)
+            elif defecit_side == "right":
+                computed_minutes += abs(int(container["coordinate"][1]) - 4)
+
+    # if no containers can
+    if container_shifts == 0:
+        return float("inf")
+
+    ## manhattan cost is abs(x_coord - target_x_coord) 
+
+    return computed_minutes
+
+# Purpose: takes in a ship grid from a Ship and returns if the ship is balanced
+def is_balanced(ship : ShipProblem):
+    left_mass = 0
+    right_mass = 0
+    balanced_mass = ship.mass / 2
+
+    for container in ship.grid:
+        x_coord = int(container["coordinate"][1])
+        if (x_coord <= 3): left_mass += container["weight"]
+        else: right_mass += container["weight"]
 
     return (abs(left_mass - right_mass) / balanced_mass) <= 0.1
 

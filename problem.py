@@ -1,18 +1,28 @@
 import copy
 class ShipProblem:
 
-    __slots__ = ["distance_cost", "function_cost", "grid", "last_column", "top_containers"]
+    __slots__ = ["distance_cost", "function_cost", "grid", "last_column", "mass", "top_containers"]
 
-    def __init__(self, distance_cost = 0, grid = None, last_column = 0):
+    def __init__(self, distance_cost = 0, grid = None, mass = 0, last_column = 0):
         self.distance_cost = distance_cost
         self.function_cost = 0
         self.grid = grid
+        self.mass = self.calculate_mass(mass)
         self.last_column = last_column
-
         self.top_containers = self.set_top_containers()
 
     def __lt__(self, other):
         return self.function_cost < other.function_cost
+
+    def calculate_mass(self, mass):
+        # if a mass was passed in, assign that mass
+        if mass != 0: return mass 
+
+        # sum up weight of all containers
+        calculated_mass = 0
+        for container in self.grid:
+            calculated_mass += container["weight"]
+        return calculated_mass
 
     ## finds and sets the top containers for all columns
     def set_top_containers(self):
@@ -78,5 +88,5 @@ class ShipProblem:
                 new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
                 manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
 
-            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, last_column = i))
+            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, mass = self.mass, last_column = i))
         return new_ships
