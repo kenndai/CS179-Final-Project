@@ -83,22 +83,3 @@ class ShipProblem:
 
             new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, parent = self))
         return new_ships
-
-ship = ShipProblem(grid=[
-        {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
-        {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
-        {'coordinate': ['01', '06'], 'weight': 2500, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-        {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-        {'coordinate': ['02', '06'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-        {'coordinate': ['03', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-        {'coordinate': ['02', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-        {'coordinate': ['05', '01'], 'weight': 99999, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}])
-
-
-all_new_ships = []
-for i in range(1, 7):
-    new_ships = ship.move_crane(i)
-    if new_ships == [[]]: continue
-    all_new_ships += new_ships
-
-print(all_new_ships)

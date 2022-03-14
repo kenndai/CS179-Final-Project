@@ -61,7 +61,7 @@ def expand_node(ship : ShipProblem):
         if new_ships == [[]]: continue
         all_new_ships += new_ships
 
-    return new_ships
+    return all_new_ships
 
 def main():
     grid = [
