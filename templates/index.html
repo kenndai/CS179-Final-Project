@@ -66,7 +66,9 @@
 							class="button title is-large navbar-item"
 							disabled
 						>
-							Ship Name
+							{% for item in data %}
+								{{item.filename}}
+							{% endfor %}
 						</button>
 						<button
 							id="finish-button"

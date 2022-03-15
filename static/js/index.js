@@ -58,6 +58,7 @@ window.onload = function makeGrid() {
 
     console.log('buffer grid loaded');
 
+    //struct to make sure manifest only loads once
     function gotManifest() {
         gotManifest.state = false;
         gotManifest.count = 0;
