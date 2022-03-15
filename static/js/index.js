@@ -87,5 +87,38 @@ window.onload = function makeGrid() {
     }
 
     //balance function called when balance button pressed
+    //...
 
+    //modal pop up
+    var load_button = document.getElementById("Load-button");
+    var container_name_modal = document.getElementById("container-name-modal");
+    var num_containers_modal = document.getElementById("num-containers-modal")
+    var close = document.getElementsByClassName("delete")[0];
+    var num_containers_modal_submit_btn = document.getElementsByClassName("num-containers-modal-submit")[0];
+    var container_name_modal_submit_btn = document.getElementsByClassName("container-name-modal-submit")[0];
+    var container_count = 0;
+    var container_data_arr = []
+
+    // When the user clicks on the button, open the modal
+    load_button.onclick = function() {
+        num_containers_modal = "block";
+    }
+
+    // When the user clicks on submit, record data and open name_modal
+    num_containers_modal_submit_btn.onclick = function() {
+        container_count = num_containers_modal.value;
+        console.log("number of containers", num_of_containers);
+        if (container_count != 0) {
+            container_name_modal.style.display = "block"; //displays the modal
+        }
+    }
+
+    // When the user clicks on submit, record data and open name_modal
+    container_name_modal_submit_btn.onclick = function() {
+        container_data_arr.push(container_name_modal.value);
+        if (container_count > 0) {
+            container_name_modal.style.display = "block";
+            container_count--;
+        }
+    }
 }
