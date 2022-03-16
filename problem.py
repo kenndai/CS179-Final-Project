@@ -74,26 +74,29 @@ class ShipProblem:
             # skip the column you're moving away from
             if i == column_num: continue
 
+            # get top container of the i-th column
+            ith_top_container = self.top_containers[i]
+            if ith_top_container == 10:
+                continue
+
             # makes a deepcopy of the ship's grid that will be modified, i hate python
             new_grid = copy.deepcopy(self.grid)
 
-            # get top container of the i-th column
-            i_top_container = self.top_containers[i]
-
             # place container in the first row of the i-th column
-            if i_top_container == None:
+            if ith_top_container == None:
                 new_grid[index_in_grid]["coordinate"] = [1, i]
                 manhattan_distance = abs(top_y_coord - 1) + abs(top_x_coord - i)
             # place container on top of the top container in the i-th column
             else: 
-                new_y_coord = int(i_top_container["coordinate"][0]) + 1
+                new_y_coord = int(ith_top_container["coordinate"][0]) + 1
                 new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
                 manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
 
             change = {
                 "name" : top_container["text"],
                 "orig" : [top_y_coord, top_x_coord],
-                "new" : new_grid[index_in_grid]["coordinate"]
+                "new" : new_grid[index_in_grid]["coordinate"],
+                "minutes": manhattan_distance
             }
 
             new_ships.append(ShipProblem(distance_cost=self.distance_cost+manhattan_distance, grid=new_grid, 
