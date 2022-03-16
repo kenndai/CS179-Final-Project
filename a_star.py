@@ -70,7 +70,7 @@ def heuristic_cost(ship : ShipProblem):
     computed_minutes = 0
     remaining_defecit = defecit
     for container in sorted_containers:
-        if container["weight"] <= remaining_defecit:
+        if container["weight"] <= remaining_defecit and container["weight"] <= remaining_defecit:
             container_shifts += 1
             remaining_defecit -= container["weight"]
             if defecit_side == "left":
@@ -78,7 +78,7 @@ def heuristic_cost(ship : ShipProblem):
             elif defecit_side == "right":
                 computed_minutes += abs(int(container["coordinate"][1]) - 4)
 
-    # if no containers can
+    # if no containers can be moved, function cost infinity
     if container_shifts == 0:
         return float("inf")
 
@@ -149,8 +149,9 @@ def get_steps(end_ship):
 #     ship = ShipProblem(grid=grid)
 #     end_ship = a_star(ship)
 
-#     steps = get_path(end_ship)
+#     steps = get_steps(end_ship)
 #     for step in steps:
 #         print(step)
+#     print(f"Nodes expanded {nodes_expanded}")
 
 # main()

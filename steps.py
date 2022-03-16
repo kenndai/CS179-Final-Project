@@ -12,7 +12,6 @@ def main():
                         {'coordinate': ['01', '03'], 'weight': 3000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
                         {'coordinate': ['05', '01'], 'weight': 1000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
 
-
     ship = ShipProblem(grid=condensed_manifest)
     steps = get_steps(a_star(ship))
 
