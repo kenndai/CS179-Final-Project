@@ -138,6 +138,8 @@ btn {
     height: 520px;
     margin: 0 auto;
     padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .buffer-grid{

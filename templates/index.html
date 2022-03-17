@@ -66,9 +66,7 @@
 							class="button title is-large navbar-item"
 							disabled
 						>
-							{% for item in data %}
-								{{item.filename}}
-							{% endfor %}
+							{{data[0].filename}}
 						</button>
 						<button
 							id="finish-button"
@@ -103,7 +101,6 @@
 						Confirm
 					</button>
 					<button
-						data-modal-target="#balanced-modal"
 						id="balance-button"
 						class="button is-large my-6"
 					>
@@ -115,11 +112,11 @@
 
 				<div class="right-side-bar">
 					<div class="time-info-box">
-						<div>Total Est. Time:</div>
-						<div>Est. Time:</div>
+						<div id="total-time">Total Est. Time:</div>
+						<div id="curr-time">Est. Time:</div>
 					</div>
-					<div class="move-info-box">
-						<div>Empty Box For Steps</div>
+					<div class="move-info-box" id ="move-info-box">
+						
 					</div>
 				</div>
 			</section>
@@ -175,7 +172,7 @@
 						aria-label="close"
 					></button>
 				</header>
-				<form action="">
+				<!--<form action="">-->
 					<section class="modal-card-body has-text-black">
 						<input
 							class="input is-medium"
@@ -193,7 +190,7 @@
 							Submit
 						</button>
 					</footer>
-				</form>
+				<!--</form>-->
 			</div>
 		</div>
 

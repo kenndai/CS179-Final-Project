@@ -1,4 +1,8 @@
-import os, manifest_parser, ship
+import os, manifest_parser, problem, a_star
+
+from more_itertools import consecutive_groups
+
+from sqlalchemy import false, true
 
 from flask import Flask, redirect, render_template, request, url_for, jsonify, Response
 from werkzeug.utils import secure_filename
@@ -9,9 +13,10 @@ ALLOWED_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 
 # global variables
-filename = "CunardBlue.txt"
+filename = "test1.txt"
 condensedManifest = []
-myShip = ship.Ship()
+ship = None
+balance_pressed = false
 
 @app.route("/", methods=["POST", "GET"])
 def landing_page():
@@ -57,9 +62,22 @@ def allowed_file(filename):
 @app.route("/main", methods=["POST", "GET"])
 def main_page():
     if request.method == "POST":
-        container_count = request.form["num-containers"]
-        print(container_count)
-        if container_count != "":
+        #balance button was pressed
+        global ship
+
+        if request.get_json() == "balance pressed":
+
+            global balance_pressed
+            balance_pressed = true
+            
+            steps = a_star.get_steps(a_star.a_star(ship))
+
+            return jsonify(steps)
+        #load button was pressed
+        elif request.form["num-containers"] != "":
+            # retrieve container_count but also container arr values
+            container_count = request.form["num-containers"]
+            print(container_count)
             return ('', 204)
         else:
             # get "name" attribute from input
@@ -67,15 +85,16 @@ def main_page():
 
             #looks up function to call for given request_form_key
             post_dict[request_form_key](request.form[request_form_key])
-            return render_template("index.html")
+            data = [{'filename': filename}]
+            return render_template("index.html", data)
     
     else:
         #code runs here when continue button pressed
         global condensedManifest
-        global myShip
 
         condensedManifest = manifest_parser.parse(filename)
-        myShip.fillGrid(condensedManifest)
+        print(condensedManifest)
+        ship = problem.ShipProblem(grid=condensedManifest)
 
         #print(filename)
         data = [{'filename': filename}]
@@ -84,8 +103,17 @@ def main_page():
 # this route runs when mainpage is loaded for the first time
 @app.route("/main-manifest-loaded", methods=["GET"])
 def send_manifest_to_main_page():
-    print(myShip.grid[0][4].name) #test code
     return jsonify(condensedManifest)
+
+# this route runs when balance button pressed
+@app.route("/balance", methods=["POST", "GET"])
+def balance():
+    # balance button was pressed
+    if request.form["balance-btn"] == "Balance":
+        global balance_pressed
+        balance_pressed = true
+        steps = a_star.get_steps(a_star.a_star(ship))
+        return render_template("index.html", data=steps)
 
 if __name__ == "__main__":
     app.run(debug=True)

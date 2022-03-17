@@ -88,7 +88,55 @@ window.onload = function makeGrid() {
     }
 
     //balance function called when balance button pressed
-    //...
+    var balance_button = document.getElementById("balance-button");
+    var time_arr = []
+    balance_button.onclick = function() {
+        //fetch steps data from python backend
+        fetch("/main", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify("balance pressed"),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                let total_time = 0;
+
+                //fill move info table html with steps
+                //print(f'Move {step["name"]} at {step["orig"]} to {step["new"]} Minutes: {step["minutes"]}')
+                let move_table = document.getElementById("move-info-box");
+
+                console.log(data.length)
+                for (let i = 1; i < data.length; i++) {
+                    //for each step "(step 1:2) Move "
+                    let step = document.createElement("div");
+                    step.id = "step-" + i;
+                    num = data.length-1
+                    step.innerHTML = "(Step " + i + ":" + num + ") Move [" + data[i]["orig"][0] + ", " + data[i]["orig"][1] + "] to " + "[" + data[i]["new"][0] + ", " + data[i]["new"][1] + "]"
+
+                    //add total time and record each curr time into global list for later reference
+                    time_arr.push(data[i]["minutes"])
+                    total_time += parseInt(data[i]["minutes"])
+
+                    move_table.appendChild(step);            
+                }
+
+                //assign total est. time
+                document.getElementById("total-time").innerHTML = "Total Est. Time: " + total_time + "minutes"
+
+                //assign curr est. time
+                if (data.length > 1) {
+                    document.getElementById("curr-time").innerHTML = "Est. Time: " + time_arr[0] + "minutes"
+                } else {
+                    document.getElementById("curr-time").innerHTML = "Est. Time: 0"
+                }
+
+            })
+            .catch(err => { console.log(err); })
+    }
 
     //modal pop up
     var load_button = document.getElementById("Load-button");
@@ -108,7 +156,7 @@ window.onload = function makeGrid() {
     // When the user clicks on submit, record data and open name_modal
     num_containers_modal_submit_btn.onclick = function() {
         container_count = num_containers_modal.value;
-        console.log("number of containers", num_of_containers);
+        console.log("number of containers", container_count);
         if (container_count != 0) {
             container_name_modal.style.display = "block"; //displays the modal
         }
