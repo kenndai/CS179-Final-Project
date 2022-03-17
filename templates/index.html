@@ -66,7 +66,9 @@
 							class="button title is-large navbar-item"
 							disabled
 						>
-							Ship Name
+							{% for item in data %}
+								{{item.filename}}
+							{% endfor %}
 						</button>
 						<button
 							id="finish-button"
@@ -173,7 +175,7 @@
 						aria-label="close"
 					></button>
 				</header>
-				<form action="#" method="post">
+				<form action="">
 					<section class="modal-card-body has-text-black">
 						<input
 							class="input is-medium"
@@ -186,7 +188,42 @@
 						<button
 							data-close-button
 							type="submit"
-							class="button is-success"
+							class="num-containers-modal-submit button is-success"
+						>
+							Submit
+						</button>
+					</footer>
+				</form>
+			</div>
+		</div>
+
+		<div id="container-name-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">
+						Description of the container's contents?
+					</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
+				<form action="">
+					<section class="modal-card-body has-text-black">
+						<input
+							class="input is-medium"
+							type="number"
+							name="containers-name"
+							placeholder="Container's name"
+						/>
+					</section>
+					<footer class="modal-card-foot">
+						<button
+							data-close-button
+							type="submit"
+							class="container-name-modal-submit button is-success"
 						>
 							Submit
 						</button>

@@ -78,7 +78,8 @@ def main_page():
         myShip.fillGrid(condensedManifest)
 
         #print(filename)
-        return render_template("index.html")
+        data = [{'filename': filename}]
+        return render_template("index.html", data=data)
 
 # this route runs when mainpage is loaded for the first time
 @app.route("/main-manifest-loaded", methods=["GET"])
