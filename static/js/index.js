@@ -93,6 +93,7 @@ window.onload = function makeGrid() {
     var previous_line_unhighlighted = ""
     var curr_step = 1
     var total_time = 0
+    var steps
 
     balance_button.onclick = function() {
         //fetch steps data from python backend
@@ -107,6 +108,7 @@ window.onload = function makeGrid() {
             .then(data => {
                 console.log(data);
 
+                steps = data
                 total_time = 0;
                 time_dict = {}
                 previous_line_unhighlighted = ""
@@ -122,10 +124,36 @@ window.onload = function makeGrid() {
                     let step = document.createElement("div");
                     step.id = "step-" + i;
                     num = data.length-1
-                    step.innerHTML = "(Step " + i + ":" + num + ") Move [" + data[i]["orig"][0] + ", " + data[i]["orig"][1] + "] to " + "[" + data[i]["new"][0] + ", " + data[i]["new"][1] + "]"
+
+                    //add 0 to the numbers for consistent formatting
+                    let row0 = ""
+                    if (data[i]["orig"][0] < 10) {
+                        row0 = "0" + data[i]["orig"][0]
+                    } else {
+                        row0 = data[i]["orig"][0]
+                    }
+                    let col0 = ""
+                    if (data[i]["orig"][0] < 10) {
+                        col0 = "0" + data[i]["orig"][1]
+                    } else {
+                        col0 = data[i]["orig"][1]
+                    }
+                    let row1 = ""
+                    if (data[i]["new"][0] < 10) {
+                        row1 = "0" + data[i]["new"][0]
+                    } else {
+                        row1 = data[i]["new"][0]
+                    }
+                    let col1 = ""
+                    if (data[i]["new"][0] < 10) {
+                        col1 = "0" + data[i]["new"][1]
+                    } else {
+                        col1 = data[i]["new"][1]
+                    }
+
+                    step.innerHTML = "(" + i + " of " + num + ") Move [" + row0 + ", " + col0 + "] to " + "[" + row1 + ", " + col1 + "]"
 
                     //add total time and record each curr time into global list for later reference
-
                     time_dict[""+i] = data[i]["minutes"]
                     total_time += parseInt(data[i]["minutes"])
 
@@ -146,8 +174,16 @@ window.onload = function makeGrid() {
                 let first_step = document.getElementById("step-1")
                 let innerHTML = first_step.innerHTML;
                 previous_line_unhighlighted = first_step.innerHTML;
-                innerHTML = "<span class='highlight'>" + innerHTML + "</span>";
+                innerHTML = innerHTML.substring(0, 14) + "<span class='highlight-1'>" + innerHTML.substring(14, 22) + "</span>"
+                    + innerHTML.substring(22, 26) + "<span class='highlight-2'>" + innerHTML.substring(26, 34) + "</span>";
                 first_step.innerHTML = innerHTML;
+
+                //highlight boxes
+                cell_id = getCellID(steps, 1, "orig")
+                document.getElementById(cell_id).style.backgroundColor = "#ff00bf"
+
+                cell_id = getCellID(steps, 1, "new")
+                document.getElementById(cell_id).style.backgroundColor = "#FFFF00"
 
             })
             .catch(err => { console.log(err); })
@@ -160,26 +196,45 @@ window.onload = function makeGrid() {
             let id = "step-" + curr_step
             document.getElementById(id).innerHTML = previous_line_unhighlighted
 
+            //move the box and log it
+            orig_cell_id = getCellID(steps, curr_step, "orig")
+            new_cell_id = getCellID(steps, curr_step, "new")
+            temp_html = document.getElementById(orig_cell_id).innerHTML
+            document.getElementById(orig_cell_id).innerHTML = document.getElementById(new_cell_id).innerHTML
+            document.getElementById(new_cell_id).innerHTML = temp_html
+
+            //log the move
+            
+
+            //unhighlight boxes
+            document.getElementById(orig_cell_id).style.backgroundColor = "white";
+            document.getElementById(new_cell_id).style.backgroundColor = "white";
+
             //update the total minutes
             total_time -= time_dict[curr_step + ""]
             document.getElementById("total-time").innerHTML = "Total Est. Time: " + total_time + " minutes"
-
-            //move the box and log it
-            
         }
 
         //goto next step
         curr_step++
 
-        //unhighlight next line and update current minutes
+        //highlight next line and update current minutes
         if (curr_step <= Object.keys(time_dict).length) {
             //highlight next
             let next_id = "step-" + curr_step
             let next_step = document.getElementById(next_id)
             let innerHTML = next_step.innerHTML;
             previous_line_unhighlighted = next_step.innerHTML;
-            innerHTML = "<span class='highlight'>" + innerHTML + "</span>";
+            innerHTML = innerHTML.substring(0, 14) + "<span class='highlight-1'>" + innerHTML.substring(14, 22) + "</span>"
+                + innerHTML.substring(22, 26) + "<span class='highlight-2'>" + innerHTML.substring(26, 34) + "</span>";
             next_step.innerHTML = innerHTML;
+
+            //highlight boxes
+            cell_id = getCellID(steps, curr_step, "orig")
+            document.getElementById(cell_id).style.backgroundColor = "#ff00bf"
+
+            cell_id = getCellID(steps, curr_step, "new")
+            document.getElementById(cell_id).style.backgroundColor = "#FFFF00"
 
             //update curr time
             document.getElementById("curr-time").innerHTML = "Est. Time: " + time_dict[curr_step + ""] + " minutes"
@@ -224,4 +279,19 @@ window.onload = function makeGrid() {
             container_count--;
         }
     }
+}
+
+function getCellID(steps, i, str) {
+    cell_id = ""
+    if (steps[i][str][0] < 10) {
+        cell_id = "cell-0" + steps[i][str][0]
+    } else {
+        cell_id = "cell-" + steps[i][str][0]
+    }
+    if (steps[i][str][1] < 10) {
+        cell_id += "-0" + steps[i][str][1]
+    } else {
+        cell_id += "-" + steps[i][str][1]
+    }
+    return cell_id
 }
