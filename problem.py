@@ -1,14 +1,16 @@
 import copy
 class ShipProblem:
 
-    __slots__ = ["distance_cost", "function_cost", "grid", "last_column", "mass", "top_containers"]
+    __slots__ = ["distance_cost", "function_cost", "grid", "last_column", "mass", "top_containers", "parent", "change"]
 
-    def __init__(self, distance_cost = 0, grid = None, mass = 0, last_column = 0):
+    def __init__(self, distance_cost = 0, grid = None, mass = 0, last_column = 0, parent=None, change="Start"):
         self.distance_cost = distance_cost
         self.function_cost = 0
         self.grid = grid
         self.mass = self.calculate_mass(mass)
         self.last_column = last_column
+        self.parent = parent
+        self.change = change
         self.top_containers = self.set_top_containers()
 
     def __lt__(self, other):
@@ -72,21 +74,31 @@ class ShipProblem:
             # skip the column you're moving away from
             if i == column_num: continue
 
+            # get top container of the i-th column
+            ith_top_container = self.top_containers[i]
+            if ith_top_container == 10:
+                continue
+
             # makes a deepcopy of the ship's grid that will be modified, i hate python
             new_grid = copy.deepcopy(self.grid)
 
-            # get top container of the i-th column
-            i_top_container = self.top_containers[i]
-
             # place container in the first row of the i-th column
-            if i_top_container == None:
+            if ith_top_container == None:
                 new_grid[index_in_grid]["coordinate"] = [1, i]
                 manhattan_distance = abs(top_y_coord - 1) + abs(top_x_coord - i)
-            # place container one higher than the top container in the i-th column
+            # place container on top of the top container in the i-th column
             else: 
-                new_y_coord = int(i_top_container["coordinate"][0]) + 1
+                new_y_coord = int(ith_top_container["coordinate"][0]) + 1
                 new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
                 manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
 
-            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, mass = self.mass, last_column = i))
+            change = {
+                "name" : top_container["text"],
+                "orig" : [top_y_coord, top_x_coord],
+                "new" : new_grid[index_in_grid]["coordinate"],
+                "minutes": manhattan_distance
+            }
+
+            new_ships.append(ShipProblem(distance_cost=self.distance_cost+manhattan_distance, grid=new_grid, 
+                                         mass=self.mass, last_column=i, parent=self, change=change))
         return new_ships
