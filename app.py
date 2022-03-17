@@ -13,7 +13,7 @@ ALLOWED_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 
 # global variables
-filename = "test1.txt"
+filename = "test_2.txt"
 condensedManifest = []
 ship = None
 balance_pressed = false
@@ -85,7 +85,7 @@ def main_page():
 
             #looks up function to call for given request_form_key
             post_dict[request_form_key](request.form[request_form_key])
-            data = [{'filename': filename}]
+            data = [{'filename': filename[:-4]}]
             return render_template("index.html", data)
     
     else:
@@ -97,7 +97,7 @@ def main_page():
         ship = problem.ShipProblem(grid=condensedManifest)
 
         #print(filename)
-        data = [{'filename': filename}]
+        data = [{'filename': filename[:-4]}]
         return render_template("index.html", data=data)
 
 # this route runs when mainpage is loaded for the first time
