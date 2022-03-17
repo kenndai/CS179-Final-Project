@@ -1,3 +1,4 @@
+from calendar import c
 import copy
 class ShipProblem:
 
@@ -76,21 +77,30 @@ class ShipProblem:
 
             # get top container of the i-th column
             ith_top_container = self.top_containers[i]
-            if ith_top_container == 10:
-                continue
 
             # makes a deepcopy of the ship's grid that will be modified, i hate python
             new_grid = copy.deepcopy(self.grid)
 
-            # place container in the first row of the i-th column
-            if ith_top_container == None:
-                new_grid[index_in_grid]["coordinate"] = [1, i]
-                manhattan_distance = abs(top_y_coord - 1) + abs(top_x_coord - i)
-            # place container on top of the top container in the i-th column
+            if ith_top_container == None: 
+                new_y_coord = 1
+            elif ith_top_container["coordinate"][0] == 10:
+                continue
             else: 
                 new_y_coord = int(ith_top_container["coordinate"][0]) + 1
-                new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]    
-                manhattan_distance = abs(top_y_coord - new_y_coord) + abs(top_x_coord - i)
+            new_grid[index_in_grid]["coordinate"] = [new_y_coord, i]
+
+            highest_between = self.get_highest_between(self.top_containers, column_num, i)
+            if highest_between == None:
+                y_between = top_y_coord
+                x_between = top_x_coord
+            else:
+                y_between = int(highest_between["coordinate"][0])
+                x_between = int(highest_between["coordinate"][1])
+
+            manhattan_distance = 0
+            # manhattan_distance += self.manhattan_distance([top_y_coord, top_x_coord], [new_y_coord, i])
+            manhattan_distance += self.manhattan_distance([top_y_coord, top_x_coord], [y_between + 1, x_between])
+            manhattan_distance += self.manhattan_distance([y_between + 1, x_between], [new_y_coord, i])
 
             change = {
                 "name" : top_container["text"],
@@ -99,6 +109,32 @@ class ShipProblem:
                 "minutes": manhattan_distance
             }
 
-            new_ships.append(ShipProblem(distance_cost=self.distance_cost+manhattan_distance, grid=new_grid, 
-                                         mass=self.mass, last_column=i, parent=self, change=change))
+            new_ships.append(ShipProblem(distance_cost = self.distance_cost + manhattan_distance, grid = new_grid, 
+                                         mass = self.mass, last_column = i, parent = self, change = change))
+
         return new_ships
+
+    # returns the highest container between two columns
+    # start_column is column_num and end_column = i
+    def get_highest_between(self, top_containers, start_column, end_column):
+        if abs(start_column - end_column) <= 1: 
+            return None
+
+        highest_between = None
+        highest_y_between = 0
+
+        min_column = min(start_column, end_column)
+        max_column = max(start_column, end_column)
+
+        for key in range(min_column + 1, max_column):
+            container = top_containers[key]
+            if container == None: continue
+            curr_y = int(container["coordinate"][0])
+            if curr_y > highest_y_between:
+                highest_y_between = curr_y
+                highest_between = container
+
+        return highest_between
+
+    def manhattan_distance(self, coordinate1, coordinate2):
+        return abs(coordinate1[0] - coordinate2[0]) + abs(coordinate1[1] - coordinate2[1])
