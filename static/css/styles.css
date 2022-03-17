@@ -138,6 +138,8 @@ btn {
     height: 520px;
     margin: 0 auto;
     padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .buffer-grid{
@@ -169,4 +171,17 @@ btn {
     margin: auto;
     margin-top: 0;
     
+}
+
+#next-button {
+    position: absolute;
+    bottom: 150px;
+    margin-left: 50px;
+    width: 120px;
+    height: 50px;
+    background-color: rgb(163, 163, 163);
+}
+
+.highlight {
+    background-color: #ff00bf;
 }
