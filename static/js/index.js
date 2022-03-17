@@ -89,7 +89,11 @@ window.onload = function makeGrid() {
 
     //balance function called when balance button pressed
     var balance_button = document.getElementById("balance-button");
-    var time_arr = []
+    var time_dict = {}
+    var previous_line_unhighlighted = ""
+    var curr_step = 1
+    var total_time = 0
+
     balance_button.onclick = function() {
         //fetch steps data from python backend
         fetch("/main", {
@@ -103,13 +107,16 @@ window.onload = function makeGrid() {
             .then(data => {
                 console.log(data);
 
-                let total_time = 0;
+                total_time = 0;
+                time_dict = {}
+                previous_line_unhighlighted = ""
+                curr_step = 1
 
                 //fill move info table html with steps
                 //print(f'Move {step["name"]} at {step["orig"]} to {step["new"]} Minutes: {step["minutes"]}')
-                let move_table = document.getElementById("move-info-box");
+                let move_table = document.getElementById("moves");
+                move_table.innerHTML = ""
 
-                console.log(data.length)
                 for (let i = 1; i < data.length; i++) {
                     //for each step "(step 1:2) Move "
                     let step = document.createElement("div");
@@ -118,24 +125,71 @@ window.onload = function makeGrid() {
                     step.innerHTML = "(Step " + i + ":" + num + ") Move [" + data[i]["orig"][0] + ", " + data[i]["orig"][1] + "] to " + "[" + data[i]["new"][0] + ", " + data[i]["new"][1] + "]"
 
                     //add total time and record each curr time into global list for later reference
-                    time_arr.push(data[i]["minutes"])
+
+                    time_dict[""+i] = data[i]["minutes"]
                     total_time += parseInt(data[i]["minutes"])
 
                     move_table.appendChild(step);            
                 }
 
                 //assign total est. time
-                document.getElementById("total-time").innerHTML = "Total Est. Time: " + total_time + "minutes"
+                document.getElementById("total-time").innerHTML = "Total Est. Time: " + total_time + " minutes"
 
                 //assign curr est. time
                 if (data.length > 1) {
-                    document.getElementById("curr-time").innerHTML = "Est. Time: " + time_arr[0] + "minutes"
+                    document.getElementById("curr-time").innerHTML = "Est. Time: " + time_dict["1"] + " minutes"
                 } else {
                     document.getElementById("curr-time").innerHTML = "Est. Time: 0"
                 }
 
+                //highlight step 1
+                let first_step = document.getElementById("step-1")
+                let innerHTML = first_step.innerHTML;
+                previous_line_unhighlighted = first_step.innerHTML;
+                innerHTML = "<span class='highlight'>" + innerHTML + "</span>";
+                first_step.innerHTML = innerHTML;
+
             })
             .catch(err => { console.log(err); })
+    }
+
+    //next button pressed
+    document.getElementById("next-button").onclick = function() {      
+        //unhighlight previous line and update total minutes
+        if (curr_step <= Object.keys(time_dict).length) {
+            let id = "step-" + curr_step
+            document.getElementById(id).innerHTML = previous_line_unhighlighted
+
+            //update the total minutes
+            total_time -= time_dict[curr_step + ""]
+            document.getElementById("total-time").innerHTML = "Total Est. Time: " + total_time + " minutes"
+
+            //move the box and log it
+            
+        }
+
+        //goto next step
+        curr_step++
+
+        //unhighlight next line and update current minutes
+        if (curr_step <= Object.keys(time_dict).length) {
+            //highlight next
+            let next_id = "step-" + curr_step
+            let next_step = document.getElementById(next_id)
+            let innerHTML = next_step.innerHTML;
+            previous_line_unhighlighted = next_step.innerHTML;
+            innerHTML = "<span class='highlight'>" + innerHTML + "</span>";
+            next_step.innerHTML = innerHTML;
+
+            //update curr time
+            document.getElementById("curr-time").innerHTML = "Est. Time: " + time_dict[curr_step + ""] + " minutes"
+
+        } else {
+            //last step just finished
+            document.getElementById("curr-time").innerHTML = "Est. Time: 0"
+        }
+
+
     }
 
     //modal pop up
