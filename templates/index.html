@@ -9,6 +9,7 @@
 			href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 		/>
 		<link rel="stylesheet" href="../static/css/styles.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="../static/js/index.js" defer></script>
 		<script src="../static/js/modal.js" defer></script>
 
@@ -116,14 +117,15 @@
 						<div id="curr-time">Est. Time: 0 minutes</div>
 					</div>
 					<div class="move-info-box" id ="move-info-box">
-						<div class="moves" id ="moves">
+						<div class="moves" id ="moves"></div>
+						<div id="next-button-holder">
+							<button
+								id="next-button"
+								class="button is-large my-6"
+								>
+								Next
+							</button>
 						</div>
-						<button
-							id="next-button"
-							class="button is-large my-6"
-						>
-							Next
-					</button>
 					</div>
 				</div>
 			</section>
@@ -171,7 +173,7 @@
 			<div class="modal-card">
 				<header class="modal-card-head">
 					<p class="modal-card-title">
-						How many containers are you loading?
+						Names of Containers Seperated by Commas
 					</p>
 					<button
 						data-close-button
@@ -179,13 +181,14 @@
 						aria-label="close"
 					></button>
 				</header>
-				<!--<form action="">-->
+				<!--<form action="#" method="post">-->
 					<section class="modal-card-body has-text-black">
 						<input
 							class="input is-medium"
-							type="number"
+							id="container-text"
+							type="text"
 							name="num-containers"
-							placeholder="Number of containers"
+							placeholder="Ex. Target Shampoo, Hawaiian Coffee Beans, Samsung S21"
 						/>
 					</section>
 					<footer class="modal-card-foot">
@@ -198,41 +201,6 @@
 						</button>
 					</footer>
 				<!--</form>-->
-			</div>
-		</div>
-
-		<div id="container-name-modal" class="modal">
-			<div class="modal-background"></div>
-			<div class="modal-card">
-				<header class="modal-card-head">
-					<p class="modal-card-title">
-						Description of the container's contents?
-					</p>
-					<button
-						data-close-button
-						class="delete"
-						aria-label="close"
-					></button>
-				</header>
-				<form action="">
-					<section class="modal-card-body has-text-black">
-						<input
-							class="input is-medium"
-							type="number"
-							name="containers-name"
-							placeholder="Container's name"
-						/>
-					</section>
-					<footer class="modal-card-foot">
-						<button
-							data-close-button
-							type="submit"
-							class="container-name-modal-submit button is-success"
-						>
-							Submit
-						</button>
-					</footer>
-				</form>
 			</div>
 		</div>
 
@@ -253,13 +221,14 @@
 					<section class="modal-card-body has-text-black">
 						<input
 							class="input is-medium"
+							id="weight"
 							type="number"
 							name="weight-entry"
 							placeholder="Container Weight (0 - 99999)"
 						/>
 					</section>
 					<footer class="modal-card-foot">
-						<button data-close-button class="button is-success">
+						<button data-close-button class="button is-success" id="weight-modal-submit">
 							Enter
 						</button>
 					</footer>
@@ -267,44 +236,32 @@
 			</div>
 		</div>
 
-		<div id="finish-modal" class="modal">
+		<div id="coordinate-modal" class="modal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
-				<form action="#" method="post">
-					<header
-						class="modal-card-head has-background-warning reminder-head"
-					>
-						<p class="modal-card-title">Reminder</p>
-						<button
-							data-close-button
-							class="delete"
-							aria-label="close"
-						></button>
-					</header>
-					<section class="modal-card-body has-text-black">
-						<p class="modal-card-title is-size-4 has-text-centered">
-							Download and send out outbound manifest
-						</p>
-						<input type="hidden" name="finish-cycle" />
-					</section>
+				<header class="modal-card-head">
+					<p class="modal-card-title" id="coordinates">
+						
+					</p>
+					<button
+						data-close-button
+						class="delete"
+						aria-label="close"
+					></button>
+				</header>
 					<footer class="modal-card-foot">
-						<button
-							data-close-button
-							type="submit"
-							class="button is-success"
-						>
-							Got it
+						<button data-close-button class="button is-success" id="weight-modal-submit">
+							Enter
 						</button>
 					</footer>
-				</form>
 			</div>
 		</div>
 
 		<!-- should show when ship has been balanced -->
-		<div id="balanced-modal" class="modal">
+		<div class="modal" id="balanced-modal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
-				<form action="#" method="post">
+				<!--<form action="#" method="post">-->
 					<header
 						class="modal-card-head has-background-primary reminder-head"
 					>
@@ -313,6 +270,7 @@
 						<button
 							data-close-button
 							class="delete"
+							id="balanced-modal-delete"
 							aria-label="close"
 						></button>
 					</header>
@@ -325,14 +283,51 @@
 						<button
 							data-close-button
 							type="Got it"
+							id="balanced-finished"
 							class="button is-success"
 						>
 							Got it
 						</button>
 					</footer>
-				</form>
+				<!--</form>-->
 			</div>
 		</div>
+
+		<div id="finish-modal" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<!--<form action="#" method="post">-->
+					<header
+						class="modal-card-head has-background-warning reminder-head"
+					>
+						<p class="modal-card-title">Reminder</p>
+						<button
+							data-close-button
+							class="delete"
+							id="finish-modal-delete"
+							aria-label="close"
+						></button>
+					</header>
+					<section class="modal-card-body has-text-black">
+						<p class="modal-card-title is-size-4 has-text-centered">
+							Download and Send Out Outbound Manifest
+						</p>
+						<input type="hidden" name="finish-cycle" />
+					</section>
+					<footer class="modal-card-foot">
+						<button
+							data-close-button
+							type="submit"
+							class="button is-success"
+							id="finish-modal-got-it"
+						>
+							Got it
+						</button>
+					</footer>
+				<!--</form>-->
+			</div>
+		</div>
+
 		<script>
 			// anchor tag acts like a button
 			function download_manifest() {

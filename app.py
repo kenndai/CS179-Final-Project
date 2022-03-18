@@ -17,6 +17,7 @@ filename = "test_2.txt"
 condensedManifest = []
 ship = None
 balance_pressed = false
+load_list = []
 
 @app.route("/", methods=["POST", "GET"])
 def landing_page():
@@ -65,7 +66,9 @@ def main_page():
         #balance button was pressed
         global ship
 
-        if request.get_json() == "balance pressed":
+        json = request.get_json()
+
+        if json == "balance pressed":
 
             global balance_pressed
             balance_pressed = true
@@ -74,11 +77,20 @@ def main_page():
 
             return jsonify(steps)
         #load button was pressed
-        elif request.form["num-containers"] != "":
-            # retrieve container_count but also container arr values
-            container_count = request.form["num-containers"]
-            print(container_count)
-            return ('', 204)
+        #elif request.form["num-containers"] != "":
+        #    # retrieve container_count but also container arr values
+        #    container_str = request.form["num-containers"]
+        #    load_list = parseContainerStr(container_str)
+        #    for x in load_list:
+        #        print(x)
+
+        #    #return ('', 204)
+        #    return jsonify(load_list)
+        elif isinstance(json, dict):
+            # call function to get coordinates based on weight
+            # add container to grid
+            # return coordinates for that container
+            return jsonify([5, 6])
         else:
             # get "name" attribute from input
             request_form_key = list(request.form.keys())[0]
@@ -99,6 +111,11 @@ def main_page():
         #print(filename)
         data = [{'filename': filename[:-4]}]
         return render_template("index.html", data=data)
+
+def parseContainerStr(str):
+    arr = [x.strip() for x in str.split(',')]
+
+    return arr
 
 # this route runs when mainpage is loaded for the first time
 @app.route("/main-manifest-loaded", methods=["GET"])
