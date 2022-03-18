@@ -46,7 +46,7 @@ def heuristic_cost(ship : ShipProblem):
     right_containers = []
 
     for container in ship.grid:
-        x_coord = int(container["coordinate"][1])
+        x_coord = container["coordinate"][1]
         if (x_coord <= 3): 
             left_mass += container["weight"]
             left_containers.append(container)
@@ -77,9 +77,9 @@ def heuristic_cost(ship : ShipProblem):
 
             ## manhattan cost is abs(x_coord - target_x_coord) 
             if defecit_side == "left":
-                computed_minutes += abs(int(container["coordinate"][1]) - 3)
+                computed_minutes += abs(container["coordinate"][1] - 3)
             elif defecit_side == "right":
-                computed_minutes += abs(int(container["coordinate"][1]) - 4)
+                computed_minutes += abs(container["coordinate"][1] - 4)
 
     # if no containers can be moved, function cost infinity
     if container_shifts == 0:
@@ -97,7 +97,7 @@ def is_balanced(ship : ShipProblem):
     balanced_mass = ship.mass / 2
 
     for container in ship.grid:
-        x_coord = int(container["coordinate"][1])
+        x_coord = container["coordinate"][1]
         if (x_coord <= 3): left_mass += container["weight"]
         else: right_mass += container["weight"]
 
@@ -138,24 +138,23 @@ def get_steps(end_ship):
 
     return steps
 
-# def main():
-#     grid = [
-#             {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
-#             {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
-#             {'coordinate': ['02', '02'], 'weight': 4000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-#             {'coordinate': ['01', '06'], 'weight': 6000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-#             {'coordinate': ['02', '01'], 'weight': 3000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-#             {'coordinate': ['02', '06'], 'weight': 1000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-#             {'coordinate': ['03', '01'], 'weight': 5000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-#             {'coordinate': ['04', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-#             {'coordinate': ['01', '03'], 'weight': 2000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-#             {'coordinate': ['05', '01'], 'weight': 7000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
-#     ship = ShipProblem(grid=grid)
-#     end_ship = a_star(ship)
+def main():
+    grid = [
+            {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
+            {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
+            {'coordinate': ['02', '02'], 'weight': 4000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
+            {'coordinate': ['01', '06'], 'weight': 6000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
+            {'coordinate': ['02', '01'], 'weight': 3000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+            {'coordinate': ['02', '06'], 'weight': 1000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+            {'coordinate': ['03', '01'], 'weight': 5000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+            {'coordinate': ['04', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+            {'coordinate': ['01', '03'], 'weight': 2000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
+            {'coordinate': ['05', '01'], 'weight': 7000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
+    ship = ShipProblem(grid=grid)
+    while (len(ship.offloads) > 0):
+        ship = a_star(ship)
+        for step in get_steps(ship):
+            print(step)
+        print(f"Nodes expanded {nodes_expanded}")
 
-#     steps = get_steps(end_ship)
-#     for step in steps:
-#         print(step)
-#     print(f"Nodes expanded {nodes_expanded}")
-
-# main()
+main()
