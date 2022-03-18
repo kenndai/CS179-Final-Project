@@ -1,7 +1,5 @@
+from json import loads
 import queue
-from re import S
-
-from numpy import append
 from problem import *
 
 nodes_expanded = 0
@@ -9,7 +7,6 @@ def offload(ship : ShipProblem):
     node_queue = queue.PriorityQueue()
 
     start_num_offload = len(ship.offloads)
-    start_num_load = len(ship.loads)
 
     node_queue.put(ship)
     global nodes_expanded 
@@ -29,8 +26,40 @@ def offload(ship : ShipProblem):
             else:
                 ships = expand_node(top_ship)
                 enqueue_nodes(queue = node_queue, ships = ships)
-    return
 
+def load(ship : ShipProblem):
+    ## pop a container from a ship's list of loads
+    load_container = ship.loads.pop()
+
+    offloads_in_column = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+    }
+
+    for container in ship.offloads:
+        column = container["coordinate"][1]
+        offloads_in_column[column] += 1
+
+    min_column = min(offloads_in_column, key=offloads_in_column.get)
+    
+    ## get the top container of the column with the fewest offload containers
+    curr_top = ship.top_containers[min_column]
+    if curr_top == None:
+        new_y_coord = 1
+    else:
+        new_y_coord = curr_top["coordinate"][0] + 1
+
+    ## need to update weight somehow
+
+    ## place the load container on top of the previous top container
+    load_container["coordinate"] = [new_y_coord, min_column]
+    ship.grid.append(load_container)
+    
+    return ship
 
 # calculates the amount of containers on top of a container to offload, including the container to offload
 def offload_heuristic(ship : ShipProblem):
@@ -93,19 +122,25 @@ def get_steps(end_ship):
 
 def main():
     grid = [{'coordinate': ['01', '01'], 'weight': 5, 'text': 'John Deere Parts (call Sue at Ohio office)'},
-            {'coordinate': ['02', '01'], 'weight': 1, 'text': 'John Deere Parts (call Sue at Ohio office)'},
             {'coordinate': ['01', '02'], 'weight': 2, 'text': 'John Deere Parts (call Sue at Ohio office)'},
             {'coordinate': ['02', '02'], 'weight': 10, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
             {'coordinate': ['01', '03'], 'weight': 4, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
             ]
-    ship = ShipProblem(grid= grid, offloads = [{'coordinate': ['01', '01'], 'weight': 5, 'text': 'John Deere Parts (call Sue at Ohio office)'},
-                                               {'coordinate': ['01', '02'], 'weight': 2, 'text': 'John Deere Parts (call Sue at Ohio office)'}])
 
-    while (len(ship.offloads) > 0):
-        ship = offload(ship)
-        for step in get_steps(ship):
-            print(step)
-        ship = ShipProblem(grid=ship.grid, offloads=ship.offloads)
-        print(f"Nodes expanded {nodes_expanded}")
+    ship = ShipProblem(grid = grid,
+                       loads = [{'coordinate': ['00', '00'], 'weight': 0, 'text': 'loader'}],
+                       offloads = [{'coordinate': ['01', '01'], 'weight': 5, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
+                                   {'coordinate': ['01', '02'], 'weight': 2, 'text': 'John Deere Parts (call Sue at Ohio office)'}])
+
+    # while (len(ship.offloads) > 0):
+    #     ship = offload(ship)
+    #     for step in get_steps(ship):
+    #         print(step)
+    #     ship = ShipProblem(grid=ship.grid, offloads=ship.offloads)
+    #     print(f"Nodes expanded {nodes_expanded}")
+
+    ship = load(ship)
+    for container in ship.grid:
+        print(container)
 
 main()
