@@ -47,7 +47,7 @@ def heuristic_cost(ship : ShipProblem):
 
     for container in ship.grid:
         x_coord = container["coordinate"][1]
-        if (x_coord <= 3): 
+        if (x_coord <= 6): 
             left_mass += container["weight"]
             left_containers.append(container)
         else: 
@@ -77,9 +77,10 @@ def heuristic_cost(ship : ShipProblem):
 
             ## manhattan cost is abs(x_coord - target_x_coord) 
             if defecit_side == "left":
-                computed_minutes += abs(container["coordinate"][1] - 3)
+
+                computed_minutes += abs(container["coordinate"][1] - 6)
             elif defecit_side == "right":
-                computed_minutes += abs(container["coordinate"][1] - 4)
+                computed_minutes += abs(container["coordinate"][1] - 7)
 
     # if no containers can be moved, function cost infinity
     if container_shifts == 0:
@@ -92,13 +93,17 @@ def heuristic_cost(ship : ShipProblem):
 
 # Purpose: takes in a ship grid from a Ship and returns if the ship is balanced
 def is_balanced(ship : ShipProblem):
+    if ship.mass == 0:
+        return True
+
     left_mass = 0
     right_mass = 0
     balanced_mass = ship.mass / 2
 
     for container in ship.grid:
         x_coord = container["coordinate"][1]
-        if (x_coord <= 3): left_mass += container["weight"]
+
+        if (x_coord <= 6): left_mass += container["weight"]
         else: right_mass += container["weight"]
 
     return (abs(left_mass - right_mass) / balanced_mass) <= 0.1
@@ -119,7 +124,8 @@ def expand_node(ship : ShipProblem):
     all_new_ships = []
 
     # each operation on ship grid returns a new ship grid
-    for i in range(1, 7):
+
+    for i in range(1, 13):
         # move_crane returns a list of ShipProblems
         new_ships = ship.move_crane(i)
         if new_ships == [[]]: continue
@@ -139,22 +145,12 @@ def get_steps(end_ship):
     return steps
 
 def main():
-    grid = [
-            {'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN'}, 
-            {'coordinate': ['01', '02'], 'weight': 0, 'text': 'NAN'}, 
-            {'coordinate': ['02', '02'], 'weight': 4000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-            {'coordinate': ['01', '06'], 'weight': 6000, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-            {'coordinate': ['02', '01'], 'weight': 3000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['02', '06'], 'weight': 1000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['03', '01'], 'weight': 5000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['04', '01'], 'weight': 6000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['01', '03'], 'weight': 2000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'},
-            {'coordinate': ['05', '01'], 'weight': 7000, 'text': 'John Deere Oversized Tires(call Sue at Ohio office)'}]
+    grid = [{'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN', 'name': 'NAN'}, {'coordinate': ['01', '02'], 'weight': 99, 'text': 'Cat', 'name': 'Cat'}, {'coordinate': ['01', '03'], 'weight': 100, 'text': 'Dog', 'name': 'Dog'}, {'coordinate': ['01', '12'], 'weight': 0, 'text': 'NAN', 'name': 'NAN'}]
+
     ship = ShipProblem(grid=grid)
-    while (len(ship.offloads) > 0):
-        ship = a_star(ship)
-        for step in get_steps(ship):
-            print(step)
-        print(f"Nodes expanded {nodes_expanded}")
+    ship = a_star(ship)
+    for step in get_steps(ship):
+        print(step)
+    print(f"Nodes expanded {nodes_expanded}")
 
 main()

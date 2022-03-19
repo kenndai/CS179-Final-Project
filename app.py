@@ -1,9 +1,4 @@
 import os, manifest_parser, problem, a_star
-
-from more_itertools import consecutive_groups
-
-from sqlalchemy import false, true
-
 from flask import Flask, redirect, render_template, request, url_for, jsonify, Response
 from werkzeug.utils import secure_filename
 from handle_log import *
@@ -16,7 +11,7 @@ app = Flask(__name__)
 filename = "test_2.txt"
 condensedManifest = []
 ship = None
-balance_pressed = false
+balance_pressed = False
 load_list = []
 
 @app.route("/", methods=["POST", "GET"])
@@ -71,7 +66,7 @@ def main_page():
         if json == "balance pressed":
 
             global balance_pressed
-            balance_pressed = true
+            balance_pressed = True
             
             steps = a_star.get_steps(a_star.a_star(ship))
 
@@ -128,7 +123,7 @@ def balance():
     # balance button was pressed
     if request.form["balance-btn"] == "Balance":
         global balance_pressed
-        balance_pressed = true
+        balance_pressed = True
         steps = a_star.get_steps(a_star.a_star(ship))
         return render_template("index.html", data=steps)
 

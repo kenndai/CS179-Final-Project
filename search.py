@@ -3,19 +3,6 @@ from problem import *
 
 nodes_expanded = 0
 
-## pass in initialized ShipProblem
-def transfer(ship : ShipProblem):
-    currShip = ship
-    while len(currShip.offloads) < 0 and len(currShip.loads) < 0:
-        ## get ship with one container offloaded
-        currShip = offload(currShip)
-
-        ## get a container to load
-        load_container = currShip.loads().pop()
-        print(f'Grab {load_container["text"]} from truck')
-        ## get weight from front end
-        load(load)
-
 def offload(ship : ShipProblem):
     node_queue = queue.PriorityQueue()
 
@@ -44,6 +31,8 @@ def load(ship : ShipProblem, weight = 0):
     ## pop a container from a ship's list of loads
     load_container = ship.loads.pop()
 
+    #TODO CHANGE TO FULL SCALE
+
     offloads_in_column = {
         1: 0,
         2: 0,
@@ -51,6 +40,12 @@ def load(ship : ShipProblem, weight = 0):
         4: 0,
         5: 0,
         6: 0,
+        7: 0,
+        8: 0,
+        9: 0,
+        10: 0,
+        11: 0,
+        12: 0,
     }
 
     for container in ship.offloads:
@@ -132,28 +127,3 @@ def get_steps(end_ship):
     steps.reverse()
 
     return steps
-
-def main():
-    grid = [{'coordinate': ['01', '01'], 'weight': 5, 'text': 'John Deere Parts (call Sue at Ohio office)'},
-            {'coordinate': ['01', '02'], 'weight': 2, 'text': 'John Deere Parts (call Sue at Ohio office)'},
-            {'coordinate': ['02', '02'], 'weight': 10, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-            {'coordinate': ['01', '03'], 'weight': 4, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-            ]
-
-    ship = ShipProblem(grid = grid,
-                       loads = [{'coordinate': ['00', '00'], 'weight': 0, 'text': 'loader'}],
-                       offloads = [{'coordinate': ['01', '01'], 'weight': 5, 'text': 'John Deere Parts (call Sue at Ohio office)'}, 
-                                   {'coordinate': ['01', '02'], 'weight': 2, 'text': 'John Deere Parts (call Sue at Ohio office)'}])
-
-    # while (len(ship.offloads) > 0):
-    #     ship = offload(ship)
-    #     for step in get_steps(ship):
-    #         print(step)
-    #     ship = ShipProblem(grid=ship.grid, offloads=ship.offloads)
-    #     print(f"Nodes expanded {nodes_expanded}")
-
-    ship = load(ship)
-    for container in ship.grid:
-        print(container)
-
-main()

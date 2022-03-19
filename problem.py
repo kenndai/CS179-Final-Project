@@ -45,13 +45,20 @@ class ShipProblem:
     ## finds and sets the top containers for all columns
     def set_top_containers(self):
         ship_grid = self.grid
+
         top_containers = {
             1: None,
             2: None,
             3: None,
             4: None,
             5: None,
-            6: None
+            6: None,
+            7: None,
+            8: None,
+            9: None,
+            10: None,
+            11: None,
+            12: None,
         }
 
         for container in ship_grid:
@@ -100,12 +107,12 @@ class ShipProblem:
                         "minutes": 8 - top_y_coord + 2
                     }
 
-                    return [ShipProblem(grid=new_grid, mass=self.mass-container["weight"], parent=self, offloads=new_offloads, change=change)]
+                    return [ShipProblem(grid=new_grid, mass=self.mass-container["weight"], parent=self, loads=self.loads, offloads=new_offloads, change=change)]
 
         # find the index of the container in the grid
         index_in_grid = self.grid.index(top_container)
 
-        for i in range(1, 7):
+        for i in range(1, 13):
             # skip the column you're moving away from
             if i == column_num: continue
 
