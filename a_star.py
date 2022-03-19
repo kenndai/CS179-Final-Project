@@ -143,14 +143,3 @@ def get_steps(end_ship):
     steps.reverse()
 
     return steps
-
-def main():
-    grid = [{'coordinate': ['01', '01'], 'weight': 0, 'text': 'NAN', 'name': 'NAN'}, {'coordinate': ['01', '02'], 'weight': 99, 'text': 'Cat', 'name': 'Cat'}, {'coordinate': ['01', '03'], 'weight': 100, 'text': 'Dog', 'name': 'Dog'}, {'coordinate': ['01', '12'], 'weight': 0, 'text': 'NAN', 'name': 'NAN'}]
-
-    ship = ShipProblem(grid=grid)
-    ship = a_star(ship)
-    for step in get_steps(ship):
-        print(step)
-    print(f"Nodes expanded {nodes_expanded}")
-
-main()
