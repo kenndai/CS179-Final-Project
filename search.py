@@ -1,8 +1,21 @@
-from json import loads
 import queue
 from problem import *
 
 nodes_expanded = 0
+
+## pass in initialized ShipProblem
+def transfer(ship : ShipProblem):
+    currShip = ship
+    while len(currShip.offloads) < 0 and len(currShip.loads) < 0:
+        ## get ship with one container offloaded
+        currShip = offload(currShip)
+
+        ## get a container to load
+        load_container = currShip.loads().pop()
+        print(f'Grab {load_container["text"]} from truck')
+        ## get weight from front end
+        load(load)
+
 def offload(ship : ShipProblem):
     node_queue = queue.PriorityQueue()
 
@@ -27,7 +40,7 @@ def offload(ship : ShipProblem):
                 ships = expand_node(top_ship)
                 enqueue_nodes(queue = node_queue, ships = ships)
 
-def load(ship : ShipProblem):
+def load(ship : ShipProblem, weight = 0):
     ## pop a container from a ship's list of loads
     load_container = ship.loads.pop()
 
